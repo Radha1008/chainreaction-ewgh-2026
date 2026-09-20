@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ChainReaction — see how your habits chain into a breach</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;1,500&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <header class="topbar">
+    <div class="topbar-inner">
+      <button type="button" class="brand" data-page="home">Chain<span class="accent-text">Reaction</span></button>
+
+      <nav class="sitenav" aria-label="Main">
+        <button type="button" class="navlink active" data-page="home">Home</button>
+        <button type="button" class="navlink" data-page="quick">Quick check</button>
+        <button type="button" class="navlink" data-page="full">Full assessment</button>
+      </nav>
+
+      <div class="topbar-actions">
+        <button type="button" class="btn btn-quiet" data-modal="howModal">How it works</button>
+        <button type="button" class="btn btn-quiet" data-modal="libraryModal">Scenarios</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="canvas">
+
+    <section id="pageHome" class="page active">
+      <div class="hero">
+        <div class="hero-inner">
+          <div class="hero-copy">
+            <p class="eyebrow">Attack-path simulator</p>
+            <h1 class="hero-title">Your biggest risk<br />might not be <span class="ink">one thing</span>.</h1>
+            <p class="hero-emphasis">It might be the connection between them.</p>
+            <p class="hero-lead">
+              ChainReaction simulates how ordinary pieces of your digital life can combine into a
+              realistic attack path — then shows you the smallest change that breaks the most paths.
+            </p>
+            <div class="hero-actions">
+              <button type="button" class="btn btn-primary btn-lg" data-page="full">Run my attack simulation</button>
+              <button type="button" class="btn btn-outline btn-lg" id="heroDemoBtn">See how an attack chain works</button>
+            </div>
+            <p class="privacy-note">
+              <span class="privacy-dot" aria-hidden="true"></span>
+              Private by design. No accounts, no uploads, no scraping. Your selections stay in this browser session.
+            </p>
+          </div>
+
+          <div class="hero-visual">
+            <div id="heroMap" class="hero-map" aria-hidden="true"></div>
+            <p class="hero-visual-cap">Your exposure map — it reacts live as you answer</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="home-band">
+        <div class="band-inner">
+          <div class="figure reveal">
+            <span class="figure-num" id="figChains">15</span>
+            <span class="figure-label">reference attack scenarios</span>
+          </div>
+          <div class="figure reveal reveal-d1">
+            <span class="figure-num" id="figCombos">40</span>
+            <span class="figure-label">rule combinations the engine can assemble</span>
+          </div>
+          <div class="figure reveal reveal-d2">
+            <span class="figure-num">0</span>
+            <span class="figure-label">pieces of personal data stored</span>
+          </div>
+          <div class="figure reveal reveal-d3">
+            <span class="figure-num" data-suffix="%">100</span>
+            <span class="figure-label">runs locally in your browser</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="home-section home-section-light">
+        <div class="home-inner">
+          <p class="section-eyebrow reveal">How it works</p>
+          <h2 class="home-h2 reveal reveal-d1">Real kill-chain logic, pointed at everyday life</h2>
+          <p class="home-lead reveal reveal-d2">
+            Every habit is tagged by the role it plays for an attacker. A deterministic rules engine —
+            not a language model guessing — checks your combination against a library of real attack
+            patterns and assembles the paths step by step. We do not predict that you will be attacked;
+            we show how the selected factors could be connected into an attack path.
+          </p>
+          <div class="pillars">
+            <article class="pillar reveal">
+              <span class="pillar-num">01</span>
+              <h3>Choose your situation</h3>
+              <p>Job hunting, traveling, dating, selling online — or simply checking your general exposure.</p>
+            </article>
+            <article class="pillar reveal reveal-d1">
+              <span class="pillar-num">02</span>
+              <h3>Build your footprint</h3>
+              <p>Select the ordinary habits and publicly visible information that apply to you.</p>
+            </article>
+            <article class="pillar reveal reveal-d2">
+              <span class="pillar-num">03</span>
+              <h3>See the attack paths</h3>
+              <p>The deterministic rules engine connects those factors into explainable, inspectable attack chains.</p>
+            </article>
+            <article class="pillar reveal reveal-d3">
+              <span class="pillar-num">04</span>
+              <h3>Break the chain</h3>
+              <p>Simulate an intervention and watch which paths stop matching — measured, not guessed.</p>
+            </article>
+          </div>
+        </div>
+      </div>
+
+      <div class="home-section home-section-alt">
+        <div class="home-inner">
+          <p class="section-eyebrow reveal">Scenario library</p>
+          <h2 class="home-h2 reveal reveal-d1">Chains people actually get caught by</h2>
+          <div id="homeScenarios" class="scenario-grid"></div>
+          <button type="button" class="btn btn-outline" data-modal="libraryModal">Browse every scenario</button>
+        </div>
+      </div>
+
+      <div class="home-cta">
+        <div class="home-inner home-cta-inner">
+          <h2 class="home-h2 reveal">Find your chain before someone else does.</h2>
+          <p class="home-cta-sub reveal reveal-d1">
+            You do not need to disappear from the internet. You need to understand what your
+            information can reveal when the pieces are connected.
+          </p>
+          <div class="hero-actions">
+            <button type="button" class="btn btn-primary btn-lg" data-page="full">Run my attack simulation</button>
+            <button type="button" class="btn btn-outline btn-lg" data-modal="libraryModal">Explore example attacks</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="pageQuick" class="page">
+      <div class="view-inner quick-wrap">
+        <div id="quickIntro">
+          <p class="section-eyebrow">Quick check</p>
+          <h1 class="page-title">Six questions. About sixty seconds.</h1>
+          <p class="page-lead">
+            Answer honestly — you'll get a severity score, the chain your answers form, and the one
+            habit worth fixing first. Everything carries over if you want the full picture after.
+          </p>
+          <div id="quickQuestions" class="quick-questions"></div>
+          <div class="quick-actions">
+            <button id="quickRunBtn" class="btn btn-primary btn-lg" type="button" disabled>See my result</button>
+            <span id="quickCount" class="selection-count">0 of 6 answered</span>
+          </div>
+        </div>
+
+        <div id="quickResult" class="quick-result" hidden>
+          <p class="section-eyebrow">Your quick result</p>
+          <div class="quick-result-top">
+            <div class="quick-score" id="quickScoreCard">
+              <span class="quick-score-num" id="quickScoreNum">0</span>
+              <span class="quick-score-band" id="quickScoreBand">Low</span>
+            </div>
+            <div class="quick-result-copy">
+              <h2 id="quickChainName"></h2>
+              <p id="quickChainSummary"></p>
+            </div>
+          </div>
+          <div id="quickWeakest" class="quick-weakest"></div>
+          <div class="quick-actions">
+            <button id="quickToFullBtn" class="btn btn-primary btn-lg" type="button">See the full breakdown</button>
+            <button id="quickRetakeBtn" class="btn btn-quiet" type="button">Retake</button>
+          </div>
+          <p class="quick-foot">
+            The full assessment adds 12 more habits, the step-by-step chain, the threat-actor model,
+            and an exportable report — starting from these answers.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="pageFull" class="page">
+      <div class="subnav">
+        <div class="subnav-inner">
+          <button type="button" class="step active" data-tab="profile" role="tab" aria-selected="true">
+            <span class="step-num">1</span><span class="step-name">Your profile</span>
+          </button>
+          <span class="step-sep" aria-hidden="true"></span>
+          <button type="button" class="step" data-tab="chain" role="tab" aria-selected="false">
+            <span class="step-num">2</span><span class="step-name">The chain</span>
+          </button>
+          <span class="step-sep" aria-hidden="true"></span>
+          <button type="button" class="step" data-tab="threat" role="tab" aria-selected="false">
+            <span class="step-num">3</span><span class="step-name">Threat model</span>
+          </button>
+        </div>
+      </div>
+
+      <div id="viewProfile" class="view active">
+        <div class="view-inner profile-layout">
+          <div class="profile-visual">
+            <div id="surfaceMap" class="surface-map"></div>
+            <div class="stage-stats">
+              <div class="stat">
+                <span class="stat-value" id="summaryEntry">0</span>
+                <span class="stat-label">Entry points</span>
+              </div>
+              <div class="stat">
+                <span class="stat-value" id="summaryWeakness">0</span>
+                <span class="stat-label">Weaknesses</span>
+              </div>
+              <div class="stat">
+                <span class="stat-value" id="summarySignal">0</span>
+                <span class="stat-label">Signals</span>
+              </div>
+            </div>
+            <p class="stage-hint" id="summaryHint">
+              Select at least one entry point and one weakness to unlock a chain.
+            </p>
+            <p class="privacy-note">
+              <span class="privacy-dot" aria-hidden="true"></span>
+              Nothing is stored or sent anywhere.
+            </p>
+          </div>
+
+          <div class="profile-select">
+            <div class="select-head">
+              <div>
+                <h1>Which of these are actually true for you?</h1>
+                <p class="select-sub">
+                  Be honest — the chain only means something if the inputs do. The map reacts as you go.
+                </p>
+              </div>
+              <button id="clearBtn" class="btn btn-quiet" type="button">Clear</button>
+            </div>
+
+            <div id="demoBanner" class="demo-banner" hidden>
+              <p><strong>Demo profile loaded &mdash; fictional data.</strong> <span id="demoDesc"></span></p>
+              <button type="button" class="btn btn-quiet btn-sm" id="demoClearBtn">Clear demo</button>
+            </div>
+
+            <div class="situation-block">
+              <p class="persona-picker-label">What are you doing right now? This highlights the factors that matter most for that threat model.</p>
+              <div id="situationGrid" class="situation-grid"></div>
+            </div>
+
+            <div class="persona-picker">
+              <p class="persona-picker-label">Or start from a ready-made profile</p>
+              <div id="personaGrid" class="persona-grid"></div>
+              <button type="button" class="btn btn-outline btn-sm" id="demoBtn">Try a realistic scenario</button>
+            </div>
+
+            <div id="habitGrid" class="habit-grid"></div>
+
+            <div class="run-row">
+              <button id="runBtn" class="btn btn-primary btn-lg" type="button" disabled>
+                <span>Run the simulation</span>
+              </button>
+              <span id="selectionCount" class="selection-count">0 habits selected</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="panelChain" class="view">
+        <div class="view-inner">
+          <div id="resultsEmpty" class="results-empty">
+            <div class="empty-icon" aria-hidden="true"></div>
+            <div>
+              <p class="results-empty-title">No chain yet</p>
+              <p>Head back to step one, pick at least two habits, and run the simulation.</p>
+            </div>
+          </div>
+
+          <div id="analyzing" class="analyzing" hidden>
+            <svg viewBox="0 0 400 90" class="scene-svg" aria-hidden="true">
+              <line x1="80" y1="55" x2="320" y2="55" stroke="var(--border)" stroke-width="2" stroke-dasharray="4 7" />
+              <circle class="scene-tick" style="--d:0s" cx="115" cy="55" r="3.5" />
+              <circle class="scene-tick" style="--d:0.24s" cx="175" cy="55" r="3.5" />
+              <circle class="scene-tick" style="--d:0.48s" cx="235" cy="55" r="3.5" />
+              <circle class="scene-tick" style="--d:0.72s" cx="295" cy="55" r="3.5" />
+              <g class="scene-attacker">
+                <circle cx="0" cy="38" r="9" fill="var(--text-faint)" />
+                <rect x="-11" y="48" width="22" height="20" rx="7" fill="var(--text-faint)" />
+              </g>
+              <g transform="translate(345,0)">
+                <circle class="scene-you-ring" cx="0" cy="45" r="24" fill="none" stroke="var(--accent)" stroke-width="1.5" opacity="0.35" />
+                <circle cx="0" cy="35" r="10" fill="none" stroke="var(--text)" stroke-width="2.5" />
+                <rect x="-13" y="46" width="26" height="22" rx="8" fill="none" stroke="var(--text)" stroke-width="2.5" />
+              </g>
+            </svg>
+            <div class="analyzing-log">
+              <p class="log-line" style="--d:0s">&gt; Scanning selected habits for entry vectors&hellip;</p>
+              <p class="log-line" style="--d:0.24s">&gt; Cross-referencing escalation weaknesses&hellip;</p>
+              <p class="log-line" style="--d:0.48s">&gt; Checking exposure signals&hellip;</p>
+              <p class="log-line" style="--d:0.72s">&gt; Matching against attack-chain library&hellip;</p>
+              <p class="log-line log-line-final" style="--d:0.96s">&gt; Chain assembled.</p>
+            </div>
+          </div>
+
+          <div id="resultsChain" class="results-chain" hidden>
+            <div class="print-only-header">
+              <p class="print-brand">ChainReaction — Simulated Attack-Path Report</p>
+              <p class="print-date" id="printDate"></p>
+            </div>
+
+            <div class="findings">
+              <p class="section-eyebrow">Simulation complete</p>
+              <h1 id="findingsTitle">We found 3 connected attack paths.</h1>
+              <p class="findings-sub">
+                None of these factors is necessarily dangerous on its own. The risk comes from
+                the connections between them.
+              </p>
+              <div id="profileSummary" class="profile-summary"></div>
+
+              <div class="metrics">
+                <div class="metric">
+                  <span class="metric-num" id="mFactors">0</span>
+                  <span class="metric-label">Factors selected</span>
+                </div>
+                <div class="metric">
+                  <span class="metric-num" id="mPaths">0</span>
+                  <span class="metric-label">Matched attack paths</span>
+                </div>
+                <div class="metric">
+                  <span class="metric-num" id="mNodes">0</span>
+                  <span class="metric-label">Connected nodes</span>
+                </div>
+                <div class="metric">
+                  <span class="metric-num" id="mRemovable">0</span>
+                  <span class="metric-label">Paths removable by one change</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="path-layout">
+              <aside class="path-list" aria-label="Matched attack paths">
+                <p class="path-list-head">Matched paths</p>
+                <div id="pathList"></div>
+              </aside>
+
+              <div class="path-detail">
+                <div class="path-detail-head">
+                  <div>
+                    <span class="chain-badge" id="chainBadge">Scenario</span>
+                    <h2 id="chainName"></h2>
+                    <p id="chainExtra" class="chain-extra"></p>
+                  </div>
+                  <div class="path-controls">
+                    <div class="view-toggle" role="group" aria-label="Perspective">
+                      <button type="button" class="view-opt active" data-view="my" aria-pressed="true">My view</button>
+                      <button type="button" class="view-opt" data-view="attacker" aria-pressed="false">Attacker view</button>
+                    </div>
+                    <button type="button" id="replayBtn" class="btn btn-quiet btn-sm">Replay path</button>
+                  </div>
+                </div>
+
+                <p class="view-note" id="viewNote">Same information, from your side.</p>
+
+                <div id="chainFlow" class="chain-flow"></div>
+
+                <div id="nodeDetail" class="node-detail" hidden></div>
+
+                <div id="severityCard" class="severity-card">
+                  <div class="severity-score-block">
+                    <span class="severity-number" id="severityNumber">0</span>
+                    <span class="severity-max">/10</span>
+                  </div>
+                  <div class="severity-detail">
+                    <span class="severity-band" id="severityBand">Low</span>
+                    <div class="severity-breakdown" id="severityBreakdown"></div>
+                  </div>
+                </div>
+
+                <div id="realWorldNote" class="real-world-note" hidden>
+                  <span class="real-world-kicker">Why this matters</span>
+                  <p id="realWorldText"></p>
+                </div>
+              </div>
+            </div>
+
+            <div class="interventions">
+              <p class="section-eyebrow">Break the chain</p>
+              <h2 class="interventions-title">What if you changed one thing?</h2>
+              <p class="interventions-sub">
+                Each figure is measured directly from the rules engine — how many of your matched
+                paths stop matching if that single factor is removed. Simulated, not applied.
+              </p>
+              <div id="interventionList" class="intervention-list"></div>
+              <div id="simResult" class="sim-result" hidden></div>
+            </div>
+
+            <div class="chain-actions">
+              <button id="downloadBtn" class="btn btn-quiet" type="button">Export this simulation</button>
+            </div>
+
+            <div id="weakestLinkPanel" class="weakest-link-panel" hidden>
+              <div class="weakest-link-head">
+                <span class="weakest-link-icon" id="weakestLinkIcon" aria-hidden="true"></span>
+                <p class="weakest-link-label">Weakest link: <strong id="weakestLinkText"></strong></p>
+              </div>
+              <button id="fixBtn" class="btn btn-fix" type="button">What if you fixed this?</button>
+              <div id="fixResult" class="fix-result" hidden></div>
+            </div>
+          </div>
+          <div id="resultsNoChain" class="results-nochain" hidden>
+            <p id="noChainText"></p>
+          </div>
+        </div>
+      </div>
+
+      <div id="panelThreat" class="view">
+        <div class="view-inner">
+          <div id="threatEmpty" class="results-empty">
+            <div class="empty-icon" aria-hidden="true"></div>
+            <div>
+              <p class="results-empty-title">Nothing to model yet</p>
+              <p>Run the simulation first and this will show which kind of attacker your profile suits.</p>
+            </div>
+          </div>
+
+          <div id="threatModel" class="threat-model" hidden>
+            <h1>Who's most likely to come after you</h1>
+            <p class="threat-lead">
+              Same selections, a different question — not the exact path, but what kind of attacker
+              your overall profile suits.
+            </p>
+            <div id="threatBars" class="threat-bars"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span class="brand">Chain<span class="accent-text">Reaction</span></span>
+      <p>
+        Built for the Elevate Women Global Hackathon 2026. Habit roles, narrative fragments, and
+        named scenarios are hand-authored reference content assembled by a deterministic rules
+        engine — not a live scan of any account, and not AI-generated security logic.
+      </p>
+    </div>
+  </footer>
+
+  <div class="modal" id="howModal" hidden>
+    <div class="modal-backdrop" data-close-modal></div>
+    <div class="modal-panel" role="dialog" aria-modal="true" aria-label="How it works">
+      <div class="modal-head">
+        <h2>How the simulation works</h2>
+        <button type="button" class="modal-close" data-close-modal aria-label="Close">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p class="section-lead">
+          This isn't an AI guessing what sounds scary. It's a deterministic rules engine modeled on
+          how real attackers chain weaknesses together — the same thinking used in MITRE ATT&amp;CK-style
+          kill-chain analysis, pointed at everyday life instead of enterprise infrastructure.
+        </p>
+        <div class="carousel" id="stepsCarousel">
+          <div class="carousel-viewport">
+            <div class="carousel-track" id="stepsTrack">
+              <div class="step-card">
+                <span class="step-card-num">01</span>
+                <h3>You self-report</h3>
+                <p>Toggle the habits that describe you. No accounts, no real passwords, no personal data — just categories.</p>
+              </div>
+              <div class="step-card">
+                <span class="step-card-num">02</span>
+                <h3>The engine checks for a chain</h3>
+                <p>Every habit is tagged by role — entry point, escalating weakness, or exposure signal — and matched against a library of real attack patterns.</p>
+              </div>
+              <div class="step-card">
+                <span class="step-card-num">03</span>
+                <h3>You see the path</h3>
+                <p>A step-by-step walkthrough of how an attacker moves from your first weak point to real impact.</p>
+              </div>
+              <div class="step-card">
+                <span class="step-card-num">04</span>
+                <h3>You see the fix</h3>
+                <p>Every chain has a single weakest link. Fix that one habit and the whole path collapses.</p>
+              </div>
+            </div>
+          </div>
+          <button type="button" class="carousel-arrow carousel-arrow-prev" id="stepsPrev" aria-label="Previous step">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+          </button>
+          <button type="button" class="carousel-arrow carousel-arrow-next" id="stepsNext" aria-label="Next step">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
+          <div class="carousel-dots" id="stepsDots"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="libraryModal" hidden>
+    <div class="modal-backdrop" data-close-modal></div>
+    <div class="modal-panel" role="dialog" aria-modal="true" aria-label="Scenario library">
+      <div class="modal-head">
+        <h2>What the engine can model</h2>
+        <button type="button" class="modal-close" data-close-modal aria-label="Close">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p class="section-lead">
+          Hand-written flagship scenarios, plus a rules engine that assembles a real chain from any
+          entry point paired with any escalating weakness. Click a scenario to load it.
+        </p>
+        <div class="carousel carousel-wide" id="libraryCarousel">
+          <div class="carousel-viewport">
+            <div class="carousel-track library-track" id="libraryGrid"></div>
+          </div>
+          <button type="button" class="carousel-arrow carousel-arrow-prev" id="libraryPrev" aria-label="Previous scenario">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+          </button>
+          <button type="button" class="carousel-arrow carousel-arrow-next" id="libraryNext" aria-label="Next scenario">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
+          <div class="carousel-dots" id="libraryDots"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cipher-widget">
+    <div id="cipherPanel" class="cipher-panel" hidden>
+      <div class="cipher-header">
+        <div class="cipher-header-text">
+          <span class="cipher-name">Cipher</span>
+          <span class="cipher-subtitle">Rule-based assistant, not an AI model</span>
+        </div>
+        <button type="button" class="cipher-close" id="cipherClose" aria-label="Close chat">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div id="cipherMessages" class="cipher-messages"></div>
+      <form id="cipherForm" class="cipher-form">
+        <input id="cipherInput" type="text" class="cipher-input" placeholder="Ask a term, or describe a habit..." autocomplete="off" />
+        <button type="submit" class="cipher-send" aria-label="Send">
+          <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M3 11l18-8-8 18-2-8-8-2Z"/></svg>
+        </button>
+      </form>
+    </div>
+    <button type="button" class="cipher-toggle" id="cipherToggle" aria-label="Open Cipher assistant">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2Z"/></svg>
+    </button>
+  </div>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
