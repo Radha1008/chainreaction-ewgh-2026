@@ -324,11 +324,36 @@ const GENERIC_FINAL_IMPACT =
   "From there, it's a standard account takeover, and a foothold to try the same trick on whatever else you own.";
 
 const STAGE_META = {
-  initial_access: { label: "Initial Access", color: "#d9a441", icon: "wifi" },
-  credential: { label: "Credential Weakness", color: "#c85a34", icon: "lock" },
-  exposure: { label: "Exposure", color: "#a13d2d", icon: "eye" },
-  iot: { label: "IoT / Physical", color: "#6b8299", icon: "home" },
-  behavior: { label: "Behavior", color: "#8a9a7b", icon: "person" },
+  initial_access: {
+    label: "Initial Access",
+    color: "#d9a441",
+    icon: "wifi",
+    blurb: "How an attacker first reaches you: wifi, links, QR codes, sideloaded apps.",
+  },
+  credential: {
+    label: "Credential Weakness",
+    color: "#c85a34",
+    icon: "lock",
+    blurb: "What lets a single foothold spread across your accounts.",
+  },
+  exposure: {
+    label: "Exposure",
+    color: "#a13d2d",
+    icon: "eye",
+    blurb: "What's visible before anyone even interacts with you.",
+  },
+  iot: {
+    label: "IoT / Physical",
+    color: "#6b8299",
+    icon: "home",
+    blurb: "Devices and physical access points around you.",
+  },
+  behavior: {
+    label: "Behavior",
+    color: "#8a9a7b",
+    icon: "person",
+    blurb: "Habits that make an approach easier to trust or overlook.",
+  },
 };
 
 const THREAT_ARCHETYPES = {

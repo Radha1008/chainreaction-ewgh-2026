@@ -67,14 +67,25 @@
     if (!container) return;
     container.innerHTML = "";
 
+    const mapScale = parseFloat(getComputedStyle(container).getPropertyValue("--map-scale")) || 1;
+    const radius = SURFACE_RADIUS * mapScale;
+
     const center = document.createElement("div");
     center.id = "surfaceCenter";
     center.className = "surface-center";
+    center.setAttribute("tabindex", "0");
+    center.setAttribute("role", "button");
+    center.setAttribute("aria-haspopup", "true");
     center.innerHTML = `
       ${iconSpan("person", "currentColor")}
       <span class="surface-center-label">You</span>
       <span class="surface-center-count">0</span>
     `;
+    center.addEventListener("mouseenter", () => showCenterPopover(center));
+    center.addEventListener("focus", () => showCenterPopover(center));
+    center.addEventListener("mouseleave", hideStagePopover);
+    center.addEventListener("blur", hideStagePopover);
+    center.addEventListener("touchstart", () => showCenterPopover(center), { passive: true });
     container.appendChild(center);
 
     const stageOrder = Object.keys(STAGE_META);
@@ -84,33 +95,132 @@
       const meta = STAGE_META[stageId];
       const angleDeg = -90 + (360 / n) * i;
       const angleRad = (angleDeg * Math.PI) / 180;
-      const x = SURFACE_RADIUS * Math.cos(angleRad);
-      const y = SURFACE_RADIUS * Math.sin(angleRad);
+      const x = radius * Math.cos(angleRad);
+      const y = radius * Math.sin(angleRad);
 
       const line = document.createElement("div");
       line.className = "surface-line";
       line.dataset.stage = stageId;
-      line.style.width = SURFACE_RADIUS + "px";
+      line.style.width = radius + "px";
       line.style.transform = `translateY(-50%) rotate(${angleDeg}deg)`;
       container.appendChild(line);
 
       const node = document.createElement("div");
       node.className = "surface-node";
       node.dataset.stage = stageId;
+      node.dataset.x = x.toFixed(1);
+      node.dataset.y = y.toFixed(1);
       node.style.left = `calc(50% + ${x}px)`;
       node.style.top = `calc(50% + ${y}px)`;
       node.style.cursor = "pointer";
+      node.setAttribute("tabindex", "0");
+      node.setAttribute("role", "button");
+      node.setAttribute("aria-haspopup", "true");
       node.title = `Jump to ${meta.label} habits`;
       node.innerHTML = `
         ${iconSpan(meta.icon, meta.color)}
         <span class="surface-node-label">${meta.label}</span>
         <span class="surface-node-count"></span>
       `;
-      node.addEventListener("click", () => jumpToStage(stageId));
+      node.addEventListener("mouseenter", () => showStagePopover(stageId, node));
+      node.addEventListener("focus", () => showStagePopover(stageId, node));
+      node.addEventListener("mouseleave", hideStagePopover);
+      node.addEventListener("blur", hideStagePopover);
+      node.addEventListener("touchstart", () => showStagePopover(stageId, node), { passive: true });
+      node.addEventListener("click", () => activateStage(stageId, node));
+      node.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          activateStage(stageId, node);
+        }
+      });
       container.appendChild(node);
     });
 
     updateSurfaceMap();
+  }
+
+  function activateStage(stageId, node) {
+    jumpToStage(stageId);
+    if (!prefersReducedMotion()) {
+      node.classList.add("surface-node-pulse");
+      setTimeout(() => node.classList.remove("surface-node-pulse"), 700);
+    }
+  }
+
+  let stagePopoverEl = null;
+
+  function getStagePopover(container) {
+    if (!stagePopoverEl || !container.contains(stagePopoverEl)) {
+      stagePopoverEl = document.createElement("div");
+      stagePopoverEl.className = "stage-popover";
+      stagePopoverEl.id = "stagePopover";
+      stagePopoverEl.setAttribute("role", "status");
+      stagePopoverEl.hidden = true;
+      container.appendChild(stagePopoverEl);
+    }
+    return stagePopoverEl;
+  }
+
+  function showStagePopover(stageId, node) {
+    const container = document.getElementById("surfaceMap");
+    if (!container) return;
+    const meta = STAGE_META[stageId];
+    const total = HABITS.filter((h) => h.stage === stageId).length;
+    const count = HABITS.filter((h) => h.stage === stageId && selected.has(h.id)).length;
+    const pop = getStagePopover(container);
+    pop.innerHTML = `
+      <strong class="stage-popover-title">${meta.label}</strong>
+      <span class="stage-popover-blurb">${meta.blurb || ""}</span>
+      <span class="stage-popover-count">${count} of ${total} of your selected habits</span>
+    `;
+    positionPopover(pop, node);
+    pop.hidden = false;
+    highlightHabitsForStage(stageId, true);
+    setSurfaceNodeHighlight(stageId, true);
+  }
+
+  function showCenterPopover(node) {
+    const container = document.getElementById("surfaceMap");
+    if (!container) return;
+    const pop = getStagePopover(container);
+    const n = selected.size;
+    const line =
+      n === 0
+        ? "No habits selected yet: the map has nothing to trace."
+        : `${n} habit${n === 1 ? "" : "s"} selected. Hover a ring to see how each one connects.`;
+    pop.innerHTML = `<span class="stage-popover-blurb">${line}</span>`;
+    positionPopover(pop, node);
+    pop.hidden = false;
+  }
+
+  function positionPopover(pop, node) {
+    const x = parseFloat(node.dataset.x || "0");
+    const y = parseFloat(node.dataset.y || "0");
+    pop.style.left = node.style.left;
+    pop.style.top = node.style.top;
+    pop.style.transform = y <= 0 ? "translate(-50%, calc(-100% - 14px))" : "translate(-50%, 14px)";
+  }
+
+  function hideStagePopover() {
+    if (stagePopoverEl) stagePopoverEl.hidden = true;
+    Object.keys(STAGE_META).forEach((stageId) => {
+      highlightHabitsForStage(stageId, false);
+      setSurfaceNodeHighlight(stageId, false);
+    });
+  }
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && stagePopoverEl && !stagePopoverEl.hidden) {
+      hideStagePopover();
+      if (document.activeElement && document.activeElement.blur) document.activeElement.blur();
+    }
+  });
+
+  function highlightHabitsForStage(stageId, on) {
+    document.querySelectorAll(`.habit-card[data-stage="${stageId}"]`).forEach((card) => {
+      card.classList.toggle("chip-highlight", on);
+    });
   }
 
   function updateSurfaceMap() {
