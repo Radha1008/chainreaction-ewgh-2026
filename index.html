@@ -4,9 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>ChainReaction — see how your habits chain into a breach</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;1,500&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
+  <meta name="color-scheme" content="dark light" />
+  <!-- No webfonts, no preconnects: this page makes zero network requests. -->
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -24,6 +23,10 @@
       <div class="topbar-actions">
         <button type="button" class="btn btn-quiet" data-modal="howModal">How it works</button>
         <button type="button" class="btn btn-quiet" data-modal="libraryModal">Scenarios</button>
+        <button type="button" class="theme-toggle" id="themeToggle" aria-pressed="false">
+          <span class="theme-toggle-dot" aria-hidden="true"></span>
+          <span class="theme-toggle-label" id="themeToggleLabel">Ink</span>
+        </button>
       </div>
     </div>
   </header>
@@ -440,6 +443,9 @@
         Built for the Elevate Women Global Hackathon 2026. Habit roles, narrative fragments, and
         named scenarios are hand-authored reference content assembled by a deterministic rules
         engine — not a live scan of any account, and not AI-generated security logic.
+      </p>
+      <p class="footer-disclaimer">
+        Educational simulation — not professional security advice and not a guarantee of protection.
       </p>
     </div>
   </footer>

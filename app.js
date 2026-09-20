@@ -1855,11 +1855,58 @@
     });
   }
 
+
+  /* ---------- Theme: Ink / Paper ----------
+     Held in memory only. Nothing is written to storage, so the
+     "no storage" promise stays literally true; this is a single
+     page, so the choice survives every in-app navigation. */
+
+  var systemLight = window.matchMedia ? window.matchMedia("(prefers-color-scheme: light)") : null;
+  var themeChoice = null; // null = follow the system
+
+  function activeTheme() {
+    if (themeChoice) return themeChoice;
+    return systemLight && systemLight.matches ? "paper" : "ink";
+  }
+
+  function paintTheme() {
+    var theme = activeTheme();
+    var root = document.documentElement;
+    if (themeChoice) root.setAttribute("data-theme", theme);
+    else root.removeAttribute("data-theme");
+
+    var btn = document.getElementById("themeToggle");
+    var label = document.getElementById("themeToggleLabel");
+    if (label) label.textContent = theme === "paper" ? "Paper" : "Ink";
+    if (btn) {
+      btn.setAttribute("aria-pressed", theme === "paper" ? "true" : "false");
+      btn.setAttribute("aria-label",
+        theme === "paper" ? "Theme: Paper. Switch to Ink." : "Theme: Ink. Switch to Paper.");
+    }
+  }
+
+  function setupTheme() {
+    var btn = document.getElementById("themeToggle");
+    if (btn) {
+      btn.addEventListener("click", function () {
+        themeChoice = activeTheme() === "paper" ? "ink" : "paper";
+        paintTheme();
+      });
+    }
+    if (systemLight && systemLight.addEventListener) {
+      systemLight.addEventListener("change", function () {
+        if (!themeChoice) paintTheme();
+      });
+    }
+    paintTheme();
+  }
+
   clearBtn.addEventListener("click", clearAll);
   runBtn.addEventListener("click", runSimulation);
 
   setupCarousel("stepsTrack", "stepsPrev", "stepsNext", "stepsDots", 4500);
 
+  setupTheme();
   renderPersonaPicker();
   renderHabitGrid();
   renderSituations();
