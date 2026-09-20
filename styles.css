@@ -249,8 +249,10 @@ body {
 }
 
 .brand-mark {
-  border-radius: 6px;
+  border-radius: 8px;
   display: block;
+  border: 1.5px solid var(--border-strong);
+  border-color: color-mix(in srgb, var(--accent) 65%, transparent);
 }
 
 .accent-text {
