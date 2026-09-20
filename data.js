@@ -1,9 +1,9 @@
-// ChainReaction — habit & attack-chain data
+// ChainReaction: habit & attack-chain data
 // This is the actual security-engineering substance of the app: every habit is
 // tagged with a role in a kill chain (entry / weakness / signal), each role has
 // hand-written narrative fragments, and a generic assembler (see app.js) can
 // build a coherent, plausible attack chain from *any* combination that includes
-// at least one entry point and one weakness — not just a fixed list of combos.
+// at least one entry point and one weakness, not just a fixed list of combos.
 // A small set of named, hand-authored scenarios below still take priority when
 // they apply, for extra narrative richness on common combinations.
 //
@@ -23,18 +23,18 @@ const HABITS = [
     primaryThreat: "opportunistic_scammer",
     shortName: "Public Wifi",
     entryStep: "You connect to public wifi without a VPN.",
-    entryConsequence: "Anyone else on that network can intercept your unencrypted traffic — including login attempts.",
+    entryConsequence: "Anyone else on that network can intercept your unencrypted traffic, including login attempts.",
   },
   {
     id: "qr_scan",
-    fixAdvice: "Preview the destination before opening — most phone cameras show the URL first. Treat a code on a public surface the same way you'd treat a link from a stranger.",
-    attackerView: "A printed code can be swapped for one pointing anywhere — with no preview before it opens.",
+    fixAdvice: "Preview the destination before opening. Most phone cameras show the URL first. Treat a code on a public surface the same way you'd treat a link from a stranger.",
+    attackerView: "A printed code can be swapped for one pointing anywhere, with no preview before it opens.",
     label: "I scan QR codes I find in public places",
     stage: "initial_access",
     role: "entry",
     primaryThreat: "opportunistic_scammer",
     shortName: "QR Code Scan",
-    entryStep: "You scan a QR code you found in public — a parking meter, a flyer, a menu.",
+    entryStep: "You scan a QR code you found in public: a parking meter, a flyer, a menu.",
     entryConsequence: "It opens a cloned login page, built to look exactly like the real thing.",
   },
   {
@@ -63,7 +63,7 @@ const HABITS = [
   },
   {
     id: "no_verify_sender",
-    fixAdvice: "Check the actual sending address, not the display name, before replying or clicking — especially on anything referencing money, credentials or urgency.",
+    fixAdvice: "Check the actual sending address, not the display name, before replying or clicking, especially on anything referencing money, credentials or urgency.",
     attackerView: "A spoofed sender name may be enough; the real address is rarely checked.",
     label: "I don't check sender addresses before replying",
     stage: "behavior",
@@ -101,7 +101,7 @@ const HABITS = [
   },
   {
     id: "active_job_search",
-    fixAdvice: "Use the recruiter-only visibility setting rather than a public 'open to work' badge — the same signal reaches recruiters without reaching everyone.",
+    fixAdvice: "Use the recruiter-only visibility setting rather than a public 'open to work' badge. The same signal reaches recruiters without reaching everyone.",
     attackerView: "Someone actively job-hunting is measurably more likely to open an unexpected recruiter message.",
     label: "I'm job hunting, and it's publicly visible",
     stage: "exposure",
@@ -180,7 +180,7 @@ const HABITS = [
     primaryThreat: "automated_credential_attacker",
     shortName: "No Email 2FA",
     weaknessStep: "Because your email has no two-factor authentication, a captured or guessed password is all it takes to fully take it over.",
-    fixAdvice: "Turn on two-factor authentication on your email today — ideally an authenticator app or hardware key, not SMS. Your email is the recovery path for almost every other account you own, so it deserves the strongest protection you have.",
+    fixAdvice: "Turn on two-factor authentication on your email today, ideally an authenticator app or hardware key, not SMS. Your email is the recovery path for almost every other account you own, so it deserves the strongest protection you have.",
   },
   {
     id: "browser_only_passwords",
@@ -191,7 +191,7 @@ const HABITS = [
     primaryThreat: "automated_credential_attacker",
     shortName: "Browser-Only Passwords",
     weaknessStep: "Because your passwords only live in your browser, a few minutes of access to your unlocked device is enough to read them straight out.",
-    fixAdvice: "Move to a dedicated password manager instead of relying on browser-only storage — it syncs safely across your devices and isn't tied to whoever has physical access to this one browser session.",
+    fixAdvice: "Move to a dedicated password manager instead of relying on browser-only storage, it syncs safely across your devices and isn't tied to whoever has physical access to this one browser session.",
   },
   {
     id: "stale_password",
@@ -213,7 +213,7 @@ const HABITS = [
     primaryThreat: "automated_credential_attacker",
     shortName: "SMS-Only 2FA",
     weaknessStep: "Because your only backup 2FA is SMS, a SIM-swap or intercepted text is enough to bypass it entirely.",
-    fixAdvice: "Add an authenticator-app or hardware-key backup instead of relying on SMS alone — SIM-swap attacks specifically target text-message codes, and they're more common than most people realize.",
+    fixAdvice: "Add an authenticator-app or hardware-key backup instead of relying on SMS alone. SIM-swap attacks specifically target text-message codes, and they're more common than most people realize.",
   },
   {
     id: "same_pin",
@@ -235,7 +235,7 @@ const HABITS = [
     primaryThreat: "opportunistic_scammer",
     shortName: "Default Router Password",
     weaknessStep: "Because your home router still uses its default password, anyone within range can get onto your network and see what's on it.",
-    fixAdvice: "Log into your router's admin panel and set a unique admin and wifi password — default credentials for most router models are public knowledge, searchable in seconds by anyone who knows your brand.",
+    fixAdvice: "Log into your router's admin panel and set a unique admin and wifi password. Default credentials for most router models are public knowledge, searchable in seconds by anyone who knows your brand.",
   },
 
   // --- SIGNAL: what tells an attacker where to aim ---
@@ -249,7 +249,7 @@ const HABITS = [
     primaryThreat: "someone_who_knows_you",
     shortName: "Public Travel Posts",
     signalStep: "Posting your travel plans tells an attacker exactly when your home is likely empty.",
-    finalImpact: "Combined with knowing you're away, this isn't just a digital breach — it's a signal that your home is an easy physical target too.",
+    finalImpact: "Combined with knowing you're away, this isn't just a digital breach: it's a signal that your home is an easy physical target too.",
   },
   {
     id: "old_forgotten_account",
@@ -260,7 +260,7 @@ const HABITS = [
     role: "signal",
     primaryThreat: "automated_credential_attacker",
     shortName: "Forgotten Account",
-    signalStep: "You have an old account you forgot about, still holding a saved card — an easy, unmonitored target.",
+    signalStep: "You have an old account you forgot about, still holding a saved card: an easy, unmonitored target.",
     finalImpact: "They reach your saved card and whatever data was left sitting in that forgotten account.",
   },
   {
@@ -277,14 +277,14 @@ const HABITS = [
   },
   {
     id: "overshare_social",
-    fixAdvice: "Treat pet names, birthdays, schools and hometowns as credentials rather than small talk — and never use them as real recovery answers.",
+    fixAdvice: "Treat pet names, birthdays, schools and hometowns as credentials rather than small talk, and never use them as real recovery answers.",
     attackerView: "Pets, dates and schools are common security-question answers.",
     label: "I overshare personal details on social media",
     stage: "exposure",
     role: "signal",
     primaryThreat: "someone_who_knows_you",
     shortName: "Social Oversharing",
-    signalStep: "Sharing personal details — birthdate, pet's name, schools — hands over exactly the answers to common security questions.",
+    signalStep: "Sharing personal details (birthdate, pet's name, schools) hands over exactly the answers to common security questions.",
     finalImpact: "They use those answers to walk past security questions on whatever this attack doesn't reach directly.",
   },
   {
@@ -296,22 +296,22 @@ const HABITS = [
     role: "signal",
     primaryThreat: "someone_who_knows_you",
     shortName: "Smart Lock Tied to Email",
-    signalStep: "Your smart lock app is tied to that same email — so email access becomes physical-world access.",
-    finalImpact: "They reach the smart lock app tied to it — a digital breach becomes a way into your physical space.",
+    signalStep: "Your smart lock app is tied to that same email, so email access becomes physical-world access.",
+    finalImpact: "They reach the smart lock app tied to it: a digital breach becomes a way into your physical space.",
   },
 ];
 
 // Severity weights per habit (1 = minor contributor, 2 = moderate, 3 = severe),
-// used to compute a CVSS-style scorecard for whatever chain actually forms —
+// used to compute a CVSS-style scorecard for whatever chain actually forms,
 // not a generic "risk: high" label, but a real weighted breakdown of why.
 const SEVERITY_WEIGHTS = {
-  // entry points — how easy this is for an attacker to exploit at scale
+  // entry points: how easy this is for an attacker to exploit at scale
   public_wifi: 2, qr_scan: 2, unknown_links: 2, sideload_apps: 2,
   no_verify_sender: 2, auto_login_public: 2,
-  // weaknesses — how much this amplifies a foothold into real compromise
+  // weaknesses: how much this amplifies a foothold into real compromise
   password_reuse: 3, no_email_2fa: 3, browser_only_passwords: 2,
   stale_password: 2, sms_only_2fa: 2, same_pin: 2, default_router_password: 1,
-  // signals — how severe the resulting impact is once the attacker has a target
+  // signals: how severe the resulting impact is once the attacker has a target
   share_location: 3, smart_lock_email: 3, old_forgotten_account: 1,
   public_email: 1, overshare_social: 2,
   // public-information factors
@@ -321,7 +321,7 @@ const SEVERITY_WEIGHTS = {
 };
 
 const GENERIC_FINAL_IMPACT =
-  "From there, it's a standard account takeover — and a foothold to try the same trick on whatever else you own.";
+  "From there, it's a standard account takeover, and a foothold to try the same trick on whatever else you own.";
 
 const STAGE_META = {
   initial_access: { label: "Initial Access", color: "#d9a441", icon: "wifi" },
@@ -336,25 +336,25 @@ const THREAT_ARCHETYPES = {
     label: "The Opportunistic Scammer",
     color: "#d9a441",
     description:
-      "Casts a wide net — mass phishing, cloned QR codes, open wifi sniffing. Doesn't know who you are, just that your habits made you an easy catch.",
+      "Casts a wide net: mass phishing, cloned QR codes, open wifi sniffing. Doesn't know who you are, just that your habits made you an easy catch.",
     realWorldNote:
-      "This is high-volume, low-effort fraud — the attacker isn't targeting you personally, they're targeting anyone whose habits happen to leave the door open.",
+      "This is high-volume, low-effort fraud: the attacker isn't targeting you personally, they're targeting anyone whose habits happen to leave the door open.",
   },
   automated_credential_attacker: {
     label: "The Automated Credential Attacker",
     color: "#c85a34",
     description:
-      "A bot working through breach dumps and credential-stuffing lists at scale. Doesn't target you specifically — targets everyone whose reused or stale credentials show up in a leak.",
+      "A bot working through breach dumps and credential-stuffing lists at scale. Doesn't target you specifically. Targets everyone whose reused or stale credentials show up in a leak.",
     realWorldNote:
-      "This runs entirely on automation — the same script trying millions of leaked username/password pairs against thousands of sites a minute, with no human ever choosing you specifically.",
+      "This runs entirely on automation: the same script trying millions of leaked username/password pairs against thousands of sites a minute, with no human ever choosing you specifically.",
   },
   someone_who_knows_you: {
     label: "Someone Who Knows You",
     color: "#a13d2d",
     description:
-      "Not a stranger — an acquaintance, ex-partner, or someone with personal context. Uses what you've shared publicly and what you're connected to, not brute force.",
+      "Not a stranger: an acquaintance, ex-partner, or someone with personal context. Uses what you've shared publicly and what you're connected to, not brute force.",
     realWorldNote:
-      "This category is the one most personal-security advice skips entirely, because the tools it uses aren't malware — they're publicly visible information and existing trust.",
+      "This category is the one most personal-security advice skips entirely, because the tools it uses aren't malware: they're publicly visible information and existing trust.",
   },
 };
 
@@ -371,7 +371,7 @@ const QUICK_CHECK = [
 ];
 
 
-// What the person is currently doing. Situations don't gate anything — they
+// What the person is currently doing. Situations don't gate anything. They
 // surface the factors most relevant to that threat model first.
 const SITUATIONS = [
   { id: "job", label: "Looking for a job", blurb: "Recruiter impersonation, credential theft, identity harvesting.",
@@ -391,12 +391,12 @@ const SITUATIONS = [
 const DEMO_PROFILE = {
   name: "Alex",
   role: "Job seeker",
-  note: "Fictional demo data — not a real person.",
+  note: "Fictional demo data, not a real person.",
   situation: "job",
   habits: ["public_employer", "active_job_search", "public_email", "no_email_2fa", "password_reuse"],
 };
 
-// Quick-start personas for the habit picker — each a realistic starting
+// Quick-start personas for the habit picker: each a realistic starting
 // point for a different kind of person, fully editable after loading.
 const PERSONAS = [
   {
@@ -425,14 +425,14 @@ const PERSONAS = [
   },
 ];
 
-// Keyword phrases mapped to the closest matching habit — lets someone
+// Keyword phrases mapped to the closest matching habit: lets someone
 // describe a situation in their own words (via Cipher, the assistant) and
 // still land on a real, matched habit instead of a dead end.
-// Each entry maps a set of trigger phrases to one or more relevant habits —
+// Each entry maps a set of trigger phrases to one or more relevant habits:
 // a broad term (like "password") deliberately surfaces several related
 // habits at once, so Cipher can offer a real set of options, not just one.
 const KEYWORD_MAP = [
-  // broad topic entries — intentionally multi-match
+  // broad topic entries: intentionally multi-match
   { keywords: ["password"], habitIds: ["password_reuse", "browser_only_passwords", "stale_password"] },
   { keywords: ["wifi"], habitIds: ["public_wifi", "default_router_password"] },
   { keywords: ["email"], habitIds: ["no_email_2fa", "public_email"] },
@@ -461,12 +461,12 @@ const KEYWORD_MAP = [
   { keywords: ["sender address", "phishing email", "spoofed email"], habitIds: ["no_verify_sender"] },
 ];
 
-// Canned FAQ triggers for Cipher, the assistant — deterministic, not an AI
+// Canned FAQ triggers for Cipher, the assistant: deterministic, not an AI
 // model, so answers are exact and reviewable rather than generated.
 const FAQ = [
   {
     triggers: ["how does this work", "how does it work", "methodology", "how do you know"],
-    answer: "No magic here — every habit is tagged as an entry point, an escalating weakness, or an exposure signal, and a rules engine checks your combination against a library of real attack patterns. Nothing is AI-generated security logic; it's hand-authored and deterministic. Check the \"How it works\" section for the full breakdown.",
+    answer: "No magic here: every habit is tagged as an entry point, an escalating weakness, or an exposure signal, and a rules engine checks your combination against a library of real attack patterns. Nothing is AI-generated security logic; it's hand-authored and deterministic. Check the \"How it works\" section for the full breakdown.",
   },
   {
     triggers: ["safe", "privacy", "store", "data", "tracked", "collect"],
@@ -474,7 +474,7 @@ const FAQ = [
   },
   {
     triggers: ["who made", "who built", "who created", "creator"],
-    answer: "Built for the Elevate Women Global Hackathon 2026. I'm the rule-based assistant bolted on at the end — think of me as the friendly front desk, not the security engine itself.",
+    answer: "Built for the Elevate Women Global Hackathon 2026. I'm the rule-based assistant bolted on at the end: think of me as the friendly front desk, not the security engine itself.",
   },
   {
     triggers: ["help", "start", "confused", "what do i do"],
@@ -482,27 +482,27 @@ const FAQ = [
   },
   {
     triggers: ["are you ai", "are you an ai", "chatgpt", "llm", "real ai"],
-    answer: "Nope — I'm keyword-matching against a fixed glossary, FAQ list, and habit library, not a language model. Consider it a very opinionated search bar with a name.",
+    answer: "Nope: I'm keyword-matching against a fixed glossary, FAQ list, and habit library, not a language model. Consider it a very opinionated search bar with a name.",
   },
 ];
 
-// Plain-English glossary for the "New Here?" tab — every technical term used
+// Plain-English glossary for the "New Here?" tab: every technical term used
 // anywhere else in this app, defined with no prior knowledge assumed.
 const GLOSSARY = [
-  { term: "VPN", definition: "A tool that scrambles your internet traffic so people on the same network — like public wifi — can't read what you're sending." },
+  { term: "VPN", definition: "A tool that scrambles your internet traffic so people on the same network (like public wifi) can't read what you're sending." },
   { term: "Two-Factor Authentication (2FA)", definition: "A second proof of identity beyond just a password, usually a code from an app or a physical key. Even if someone steals your password, they still can't get in without it." },
   { term: "Phishing", definition: "A fake message or website built to trick you into typing in a password or personal info, disguised as something legitimate." },
-  { term: "Quishing", definition: "Phishing delivered through a QR code instead of a link — you scan it without knowing where it actually leads until it's too late." },
+  { term: "Quishing", definition: "Phishing delivered through a QR code instead of a link: you scan it without knowing where it actually leads until it's too late." },
   { term: "Credential Stuffing", definition: "An automated attack that takes usernames and passwords leaked from one breach and tries them on thousands of other sites, betting that people reuse passwords." },
-  { term: "SIM-Swap", definition: "An attacker convinces your phone carrier to move your phone number onto their SIM card, so your calls and texts — including 2FA codes — go to them instead of you." },
+  { term: "SIM-Swap", definition: "An attacker convinces your phone carrier to move your phone number onto their SIM card, so your calls and texts (including 2FA codes) go to them instead of you." },
   { term: "Breach Dump", definition: "A large file of leaked usernames, passwords, or personal data from a hacked company, often traded or sold online." },
-  { term: "IoT (Internet of Things)", definition: "Everyday physical devices connected to the internet — smart locks, cameras, thermostats — each one a potential way in if it's not secured." },
-  { term: "Entry Point", definition: "The very first way an attacker gets any kind of foothold — a phishing link, an open wifi network, a cloned QR code." },
+  { term: "IoT (Internet of Things)", definition: "Everyday physical devices connected to the internet (smart locks, cameras, thermostats), each one a potential way in if it's not secured." },
+  { term: "Entry Point", definition: "The very first way an attacker gets any kind of foothold: a phishing link, an open wifi network, a cloned QR code." },
   { term: "Attack Chain / Kill Chain", definition: "The step-by-step sequence an attacker follows, from first foothold to final impact. Breaking any one link in the chain stops the rest from happening." },
-  { term: "Attack Surface", definition: "Everything about you or your systems that could potentially be exploited — every account, device, and habit combined." },
+  { term: "Attack Surface", definition: "Everything about you or your systems that could potentially be exploited: every account, device, and habit combined." },
   { term: "MITRE ATT&CK", definition: "A widely used, publicly documented framework that catalogs real-world attacker techniques, used by security teams to describe and defend against them." },
   { term: "Password Manager", definition: "An app that generates and stores a unique, strong password for every account, so you never have to reuse one or remember them all." },
-  { term: "Threat Actor", definition: "Whoever is doing the attacking — could be an automated bot, an opportunistic scammer, or someone who personally knows you." },
+  { term: "Threat Actor", definition: "Whoever is doing the attacking: could be an automated bot, an opportunistic scammer, or someone who personally knows you." },
 ];
 
 // Hand-authored flagship scenarios. Checked first, before the generic
@@ -518,13 +518,13 @@ const CHAINS = [
     weakestLink: "password_reuse",
     weakestLinkStepIndex: 3,
     stepHabits: ["public_wifi", null, null, "password_reuse", null],
-    realWorld: "Password reuse is consistently the single most exploited weakness in account takeovers — one leaked password rarely stays contained to one account.",
+    realWorld: "Password reuse is consistently the single most exploited weakness in account takeovers: one leaked password rarely stays contained to one account.",
     steps: [
       "You connect to public wifi at a coffee shop without a VPN.",
       "An attacker on the same network intercepts your unencrypted login traffic.",
       "They capture the password you just used for one account.",
       "Because you reuse that password, they try it on your email, banking, and social accounts.",
-      "One of them lets them in — full account takeover.",
+      "One of them lets them in: full account takeover.",
     ],
   },
   {
@@ -535,10 +535,10 @@ const CHAINS = [
     weakestLink: "no_email_2fa",
     weakestLinkStepIndex: 2,
     stepHabits: ["old_forgotten_account", "no_email_2fa", null, null, null],
-    realWorld: "Your email is the master key to almost every other account you own — it's the single highest-leverage account to lock down, precisely because everything else trusts it.",
+    realWorld: "Your email is the master key to almost every other account you own: it's the single highest-leverage account to lock down, precisely because everything else trusts it.",
     steps: [
       "You have an old, forgotten account with a saved card and weak security.",
-      "Your email has no two-factor authentication — just a password.",
+      "Your email has no two-factor authentication: just a password.",
       "An attacker who gets your email password (breach, phishing, or a guess) resets it.",
       "With email access, they trigger \"forgot password\" on your old forgotten account.",
       "They reach your saved card and whatever data is still sitting there.",
@@ -552,7 +552,7 @@ const CHAINS = [
     weakestLink: "no_email_2fa",
     weakestLinkStepIndex: 3,
     stepHabits: ["share_location", null, "smart_lock_email", "no_email_2fa", null],
-    realWorld: "This is where a purely digital weakness stops staying digital — the same account gap that risks your inbox can risk your actual front door once smart devices are tied to it.",
+    realWorld: "This is where a purely digital weakness stops staying digital: the same account gap that risks your inbox can risk your actual front door once smart devices are tied to it.",
     steps: [
       "You post that you're traveling, or away from home.",
       "An attacker now has a strong signal that your house is empty.",
@@ -569,7 +569,7 @@ const CHAINS = [
     weakestLink: "password_reuse",
     weakestLinkStepIndex: 4,
     stepHabits: ["qr_scan", null, null, null, "password_reuse"],
-    realWorld: "QR-code phishing (\"quishing\") has surged precisely because it skips every filter built to catch suspicious links — nothing scans a code sitting on a parking meter before you do.",
+    realWorld: "QR-code phishing (\"quishing\") has surged precisely because it skips every filter built to catch suspicious links. Nothing scans a code sitting on a parking meter before you do.",
     steps: [
       "You scan a QR code on a parking meter or flyer without checking where it leads.",
       "It opens a fake login page, cloned to look exactly like the real one.",
@@ -586,12 +586,12 @@ const CHAINS = [
     weakestLink: "browser_only_passwords",
     weakestLinkStepIndex: 2,
     stepHabits: ["auto_login_public", "browser_only_passwords", null, null, null],
-    realWorld: "No hacking skill required for this one — just autofill and thirty seconds alone with an unlocked browser, which is exactly why it's so common on shared and public machines.",
+    realWorld: "No hacking skill required for this one: just autofill and thirty seconds alone with an unlocked browser, which is exactly why it's so common on shared and public machines.",
     steps: [
-      "You stay logged into your accounts on a shared or public computer — a library, a hotel business center.",
+      "You stay logged into your accounts on a shared or public computer: a library, a hotel business center.",
       "Your passwords are only saved in that browser, nowhere else.",
       "The next person to sit down opens the browser's saved-password list and reads them directly.",
-      "No hacking required — just autofill and a few minutes alone with the machine.",
+      "No hacking required: just autofill and a few minutes alone with the machine.",
       "They now have standing access to every account whose password was saved there.",
     ],
   },
@@ -603,13 +603,13 @@ const CHAINS = [
     weakestLink: "sms_only_2fa",
     weakestLinkStepIndex: 2,
     stepHabits: ["public_email", null, "sms_only_2fa", null, null],
-    realWorld: "SIM-swap fraud specifically targets SMS-based two-factor authentication — the moment your number gets ported, every code meant to protect you gets delivered straight to the attacker instead.",
+    realWorld: "SIM-swap fraud specifically targets SMS-based two-factor authentication: the moment your number gets ported, every code meant to protect you gets delivered straight to the attacker instead.",
     steps: [
       "Your email address is easy to find or guess.",
       "An attacker uses it to figure out your likely carrier and social-engineers a SIM swap, porting your number to their own device.",
       "Your only backup two-factor method is SMS, so the swapped SIM now receives your verification codes.",
       "They use an intercepted code to reset your email password.",
-      "Full email takeover — and your real phone never even rings to warn you.",
+      "Full email takeover, and your real phone never even rings to warn you.",
     ],
   },
   {
@@ -620,13 +620,13 @@ const CHAINS = [
     weakestLink: "same_pin",
     weakestLinkStepIndex: 2,
     stepHabits: ["sideload_apps", null, null, "same_pin", null],
-    realWorld: "Apps installed outside an official store skip the review process that normally catches exactly this kind of behavior — permissions a legitimate app would never be granted.",
+    realWorld: "Apps installed outside an official store skip the review process that normally catches exactly this kind of behavior: permissions a legitimate app would never be granted.",
     steps: [
       "You install an app from outside the official app store.",
       "It requests permissions no store-reviewed app would get away with, including reading what you type.",
       "It logs the PIN you use to unlock your phone.",
       "Because you reuse that PIN elsewhere, it now doubles as the key to whatever else you protect with it.",
-      "A device, a safe, a banking app — whatever else that PIN guards is exposed too.",
+      "A device, a safe, a banking app. Whatever else that PIN guards is exposed too.",
     ],
   },
   {
@@ -636,7 +636,7 @@ const CHAINS = [
     weakestLink: "no_email_2fa",
     weakestLinkStepIndex: 5,
     stepHabits: ["public_employer", "public_email", null, "active_job_search", null, "no_email_2fa", "password_reuse"],
-    realWorld: "Recruiter impersonation works because every piece it needs is already published on purpose — the employer, the role, the openness to being approached.",
+    realWorld: "Recruiter impersonation works because every piece it needs is already published on purpose: the employer, the role, the openness to being approached.",
     objective: "Credential harvesting",
     steps: [
       "Your public profile shows your employer, your role, and that you're open to work.",
@@ -653,9 +653,9 @@ const CHAINS = [
     tourSteps: [
       {
         title: "Your profile names your employer",
-        whatHappens: "Your public profile lists where you work, your role, and that you're open to new opportunities. None of that is private — it's the point of the profile.",
+        whatHappens: "Your public profile lists where you work, your role, and that you're open to new opportunities. None of that is private: it's the point of the profile.",
         whyConnected: "This is the starting point: everything that follows is built from details you've already published.",
-        whatAttackerSees: "Organisation, role and seniority — enough to guess a likely email pattern and pick a believable angle.",
+        whatAttackerSees: "Organisation, role and seniority: enough to guess a likely email pattern and pick a believable angle.",
         whatBreaksIt: "Trimming employer and role detail, or keeping the profile out of search indexing, removes this starting point.",
       },
       {
@@ -667,10 +667,10 @@ const CHAINS = [
       },
       {
         title: "A believable approach arrives",
-        whatHappens: "A message arrives referencing your actual team and a plausible next step in your career — not a generic cold pitch.",
+        whatHappens: "A message arrives referencing your actual team and a plausible next step in your career, not a generic cold pitch.",
         whyConnected: "It uses the employer and email details from the two steps before it to sound specific instead of random.",
         whatAttackerSees: "Enough real detail to skip the questions that usually give a scam away.",
-        whatBreaksIt: "No single habit removes this step on its own — it only works because the two before it succeeded.",
+        whatBreaksIt: "No single habit removes this step on its own. It only works because the two before it succeeded.",
       },
       {
         title: "You're primed to expect this message",
@@ -689,13 +689,13 @@ const CHAINS = [
       {
         title: "No second factor stops the login",
         whatHappens: "Your email account has no two-factor authentication, so the password you just typed logs straight in.",
-        whyConnected: "Every step before this one existed to get a real password typed into a fake page — this is where that payoff lands.",
+        whyConnected: "Every step before this one existed to get a real password typed into a fake page: this is where that payoff lands.",
         whatAttackerSees: "One captured password is all it takes; there's no second check to fail.",
         whatBreaksIt: "Turning on two-factor authentication breaks the chain at exactly this point, whether or not a password was ever caught.",
       },
       {
         title: "One password, many accounts",
-        whatHappens: "Because that password is reused, what was just typed isn't limited to the fake site — it opens whatever else uses the same password.",
+        whatHappens: "Because that password is reused, what was just typed isn't limited to the fake site: it opens whatever else uses the same password.",
         whyConnected: "This is where one captured credential turns into broader account takeover, extending everything the chain built up to here.",
         whatAttackerSees: "A single working password to try across your other accounts before you've even noticed.",
         whatBreaksIt: "A unique password per account (via a password manager) means this step never happens, even if the one before it does.",
@@ -710,11 +710,11 @@ const CHAINS = [
     weakestLink: "password_reuse",
     weakestLinkStepIndex: 4,
     stepHabits: ["public_employer", "overshare_social", null, null, "password_reuse"],
-    realWorld: "No single post here is sensitive. The aggregate is — which is exactly why this pattern is so easy to miss while it's being assembled.",
+    realWorld: "No single post here is sensitive. The aggregate is, which is exactly why this pattern is so easy to miss while it's being assembled.",
     objective: "Account takeover via recovery questions",
     steps: [
       "Your employer and role are publicly visible.",
-      "Your posts add the ordinary details — a pet's name, a hometown, a school, a birthday.",
+      "Your posts add the ordinary details: a pet's name, a hometown, a school, a birthday.",
       "Those are the same values commonly used as account recovery answers.",
       "A recovery flow that relies on those questions can be attempted rather than guessed blindly.",
       "Because the resulting password is reused, one recovered account may open several.",
@@ -734,7 +734,7 @@ const CHAINS = [
       "Background details in those photos can narrow the building or street.",
       "Your publicly attached phone number moves contact to an unfiltered channel.",
       "A pickup is arranged at or near your address, confirming the area.",
-      "Posted travel or routine updates then indicate when you're likely to be there — or not.",
+      "Posted travel or routine updates then indicate when you're likely to be there, or not.",
     ],
   },
   {
@@ -796,13 +796,13 @@ const CHAINS = [
     weakestLink: "password_reuse",
     weakestLinkStepIndex: 3,
     stepHabits: ["overshare_social", null, null, "password_reuse", null],
-    realWorld: "Security questions were designed around information that used to be private — a pet's name, a hometown, a school. Social media quietly made most of that public by default.",
+    realWorld: "Security questions were designed around information that used to be private: a pet's name, a hometown, a school. Social media quietly made most of that public by default.",
     steps: [
-      "You post personal details — a pet's name, your hometown, where you went to school.",
+      "You post personal details: a pet's name, your hometown, where you went to school.",
       "An attacker collects those details from your public profile, no hacking involved.",
       "They use them to answer your account's security questions and reset a password.",
       "Because you reuse that password everywhere, resetting just one account effectively unlocks the rest.",
-      "No phishing, no malware — just publicly available answers to \"private\" questions.",
+      "No phishing, no malware: just publicly available answers to \"private\" questions.",
     ],
   },
   {
@@ -813,12 +813,12 @@ const CHAINS = [
     weakestLink: "stale_password",
     weakestLinkStepIndex: 2,
     stepHabits: ["public_email", null, "stale_password", null, null],
-    realWorld: "This one requires no cleverness at all — just a search engine for leaked-credential databases and enough patience to try a few years-old passwords against your current accounts.",
+    realWorld: "This one requires no cleverness at all: just a search engine for leaked-credential databases and enough patience to try a few years-old passwords against your current accounts.",
     steps: [
       "Your email address is public or easy to guess.",
       "An attacker searches known breach dumps for that exact address.",
       "They find a password you haven't changed in years, still listed from an old leak.",
-      "They try it directly on your current accounts — no phishing, no guessing.",
+      "They try it directly on your current accounts: no phishing, no guessing.",
       "If you reused or barely modified it since, they're in.",
     ],
   },

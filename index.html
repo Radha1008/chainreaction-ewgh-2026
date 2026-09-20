@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ChainReaction — see how your habits chain into a breach</title>
+  <title>ChainReaction: see how your habits chain into a breach</title>
   <meta name="color-scheme" content="dark light" />
   <!-- No webfonts, no preconnects: this page makes zero network requests. -->
   <link rel="stylesheet" href="styles.css" />
@@ -42,7 +42,7 @@
             <p class="hero-emphasis">It might be the connection between them.</p>
             <p class="hero-lead">
               ChainReaction simulates how ordinary pieces of your digital life can combine into a
-              realistic attack path — then shows you the smallest change that breaks the most paths.
+              realistic attack path, then shows you the smallest change that breaks the most paths.
             </p>
             <div class="hero-actions">
               <button type="button" class="btn btn-primary btn-lg" data-page="full">Run my attack simulation</button>
@@ -56,7 +56,7 @@
 
           <div class="hero-visual">
             <div id="heroMap" class="hero-map" aria-hidden="true"></div>
-            <p class="hero-visual-cap">Your exposure map — it reacts live as you answer</p>
+            <p class="hero-visual-cap">Your exposure map: it reacts live as you answer</p>
           </div>
         </div>
       </div>
@@ -87,8 +87,8 @@
           <p class="section-eyebrow reveal">How it works</p>
           <h2 class="home-h2 reveal reveal-d1">Real kill-chain logic, pointed at everyday life</h2>
           <p class="home-lead reveal reveal-d2">
-            Every habit is tagged by the role it plays for an attacker. A deterministic rules engine —
-            not a language model guessing — checks your combination against a library of real attack
+            Every habit is tagged by the role it plays for an attacker. A deterministic rules engine
+            (not a language model guessing) checks your combination against a library of real attack
             patterns and assembles the paths step by step. We do not predict that you will be attacked;
             we show how the selected factors could be connected into an attack path.
           </p>
@@ -96,7 +96,7 @@
             <article class="pillar reveal">
               <span class="pillar-num">01</span>
               <h3>Choose your situation</h3>
-              <p>Job hunting, traveling, dating, selling online — or simply checking your general exposure.</p>
+              <p>Job hunting, traveling, dating, selling online, or simply checking your general exposure.</p>
             </article>
             <article class="pillar reveal reveal-d1">
               <span class="pillar-num">02</span>
@@ -111,7 +111,7 @@
             <article class="pillar reveal reveal-d3">
               <span class="pillar-num">04</span>
               <h3>Break the chain</h3>
-              <p>Simulate an intervention and watch which paths stop matching — measured, not guessed.</p>
+              <p>Simulate an intervention and watch which paths stop matching: measured, not guessed.</p>
             </article>
           </div>
         </div>
@@ -147,7 +147,7 @@
           <p class="section-eyebrow">Quick check</p>
           <h1 class="page-title">Six questions. About sixty seconds.</h1>
           <p class="page-lead">
-            Answer honestly — you'll get a severity score, the chain your answers form, and the one
+            Answer honestly: you'll get a severity score, the chain your answers form, and the one
             habit worth fixing first. Everything carries over if you want the full picture after.
           </p>
           <div id="quickQuestions" class="quick-questions"></div>
@@ -176,7 +176,7 @@
           </div>
           <p class="quick-foot">
             The full assessment adds 12 more habits, the step-by-step chain, the threat-actor model,
-            and an exportable report — starting from these answers.
+            and an exportable report, starting from these answers.
           </p>
         </div>
       </div>
@@ -231,14 +231,14 @@
               <div>
                 <h1>Which of these are actually true for you?</h1>
                 <p class="select-sub">
-                  Be honest — the chain only means something if the inputs do. The map reacts as you go.
+                  Be honest: the chain only means something if the inputs do. The map reacts as you go.
                 </p>
               </div>
               <button id="clearBtn" class="btn btn-quiet" type="button">Clear</button>
             </div>
 
             <div id="demoBanner" class="demo-banner" hidden>
-              <p><strong>Fictional example &mdash; no real data.</strong> <span id="demoDesc"></span></p>
+              <p><strong>Fictional example: no real data.</strong> <span id="demoDesc"></span></p>
               <button type="button" class="btn btn-quiet btn-sm" id="demoClearBtn">Clear demo</button>
             </div>
 
@@ -303,7 +303,7 @@
 
           <div id="resultsChain" class="results-chain" hidden>
             <div class="print-only-header">
-              <p class="print-brand">ChainReaction — Simulated Attack-Path Report</p>
+              <p class="print-brand">ChainReaction: Simulated Attack-Path Report</p>
               <p class="print-date" id="printDate"></p>
             </div>
 
@@ -386,7 +386,7 @@
               <p class="section-eyebrow">Break the chain</p>
               <h2 class="interventions-title">What if you changed one thing?</h2>
               <p class="interventions-sub">
-                Each figure is measured directly from the rules engine — how many of your matched
+                Each figure is measured directly from the rules engine: how many of your matched
                 paths stop matching if that single factor is removed. Simulated, not applied.
               </p>
               <div id="interventionList" class="intervention-list"></div>
@@ -425,7 +425,7 @@
           <div id="threatModel" class="threat-model" hidden>
             <h1>Who's most likely to come after you</h1>
             <p class="threat-lead">
-              Same selections, a different question — not the exact path, but what kind of attacker
+              Same selections, a different question: not the exact path, but what kind of attacker
               your overall profile suits.
             </p>
             <div id="threatBars" class="threat-bars"></div>
@@ -442,10 +442,10 @@
       <p>
         Built for the Elevate Women Global Hackathon 2026. Habit roles, narrative fragments, and
         named scenarios are hand-authored reference content assembled by a deterministic rules
-        engine — not a live scan of any account, and not AI-generated security logic.
+        engine: not a live scan of any account, and not AI-generated security logic.
       </p>
       <p class="footer-disclaimer">
-        Educational simulation — not professional security advice and not a guarantee of protection.
+        Educational simulation: not professional security advice and not a guarantee of protection.
       </p>
     </div>
   </footer>
@@ -462,7 +462,7 @@
       <div class="modal-body">
         <p class="section-lead">
           This isn't an AI guessing what sounds scary. It's a deterministic rules engine modeled on
-          how real attackers chain weaknesses together — the same thinking used in MITRE ATT&amp;CK-style
+          how real attackers chain weaknesses together: the same thinking used in MITRE ATT&amp;CK-style
           kill-chain analysis, pointed at everyday life instead of enterprise infrastructure.
         </p>
         <div class="carousel" id="stepsCarousel">
@@ -471,12 +471,12 @@
               <div class="step-card">
                 <span class="step-card-num">01</span>
                 <h3>You self-report</h3>
-                <p>Toggle the habits that describe you. No accounts, no real passwords, no personal data — just categories.</p>
+                <p>Toggle the habits that describe you. No accounts, no real passwords, no personal data: just categories.</p>
               </div>
               <div class="step-card">
                 <span class="step-card-num">02</span>
                 <h3>The engine checks for a chain</h3>
-                <p>Every habit is tagged by role — entry point, escalating weakness, or exposure signal — and matched against a library of real attack patterns.</p>
+                <p>Every habit is tagged by role (entry point, escalating weakness, or exposure signal) and matched against a library of real attack patterns.</p>
               </div>
               <div class="step-card">
                 <span class="step-card-num">03</span>

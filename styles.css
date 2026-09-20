@@ -1,10 +1,10 @@
 /* ============================================================
-   DESIGN TOKENS — two themes
+   DESIGN TOKENS: two themes
    Ink (dark, default): deep aubergine-black, never pure black.
    Paper (light): warm off-white stock with aubergine ink.
    One signature accent (raspberry) is reserved for the attack
    path. One counter-colour (teal) is reserved for defences and
-   broken chains. Never colour alone — shape, label and pattern
+   broken chains. Never colour alone: shape, label and pattern
    always carry the same meaning.
    ============================================================ */
 
@@ -23,7 +23,7 @@
   --text-dim: #b9acb6;
   --text-faint: #968a95;
 
-  /* Signature accent — the attack path, and nothing else */
+  /* Signature accent: the attack path, and nothing else */
   --accent: #ef5f85;
   --accent-2: #c9295a;
   --accent-soft: rgba(239, 95, 133, 0.14);
@@ -31,7 +31,7 @@
   --accent-deep: #e0426f;
   --on-accent: #1b0a12;
 
-  /* Counter-colour — defences and the broken chain */
+  /* Counter-colour: defences and the broken chain */
   --sage: #4dd4b0;
   --success: #4dd4b0;
   --success-soft: rgba(77, 212, 176, 0.15);
@@ -176,7 +176,7 @@ html {
   scroll-behavior: smooth;
 }
 
-/* System stacks only. No CDN, no webfont request — the
+/* System stacks only. No CDN, no webfont request: the
    "no network calls" privacy claim has to stay literally true. */
 :root {
   --font-display: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, "Times New Roman", Times, serif;
@@ -4155,7 +4155,7 @@ input:focus-visible,
   .theme-toggle-dot { transition: none; }
 }
 
-/* The standing disclaimer. Shown on every page — the footer is shared. */
+/* The standing disclaimer. Shown on every page: the footer is shared. */
 .footer-disclaimer {
   flex: 1 0 100%;
   margin: 14px 0 0;

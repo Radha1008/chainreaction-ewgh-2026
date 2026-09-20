@@ -1,4 +1,4 @@
-// ChainReaction — app logic
+// ChainReaction: app logic
 // Everything here runs client-side only. Selections are kept in memory in a
 // Set and are never persisted, transmitted, or written to storage of any kind.
 
@@ -35,7 +35,7 @@
   const checkSvg =
     '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>';
 
-  // Hand-drawn, dependency-free icon set (no external images/fonts) — one
+  // Hand-drawn, dependency-free icon set (no external images/fonts). One
   // per kill-chain stage. All use currentColor so they inherit stage color.
   const ICONS = {
     wifi: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 8.5a15 15 0 0 1 20 0"/><path d="M5.5 12a10 10 0 0 1 13 0"/><path d="M9 15.5a5 5 0 0 1 6 0"/><circle cx="12" cy="19" r="1.1" fill="currentColor" stroke="none"/></svg>',
@@ -174,7 +174,7 @@
     summarySignal.textContent = signalCount;
 
     if (entryCount > 0 && weaknessCount > 0) {
-      summaryHint.textContent = "A chain is ready — scroll down and hit Run to see it unfold.";
+      summaryHint.textContent = "A chain is ready. Scroll down and hit Run to see it unfold.";
     } else if (entryCount === 0 && weaknessCount === 0) {
       summaryHint.textContent = "Select at least one entry point and one weakness to unlock a chain.";
     } else if (entryCount === 0) {
@@ -211,7 +211,7 @@
     updateSurfaceMap();
     resetResults();
 
-    // Loading a combo usually comes from the scenario-library modal — close it
+    // Loading a combo usually comes from the scenario-library modal. Close it
     // and return to the profile view so the selection is visible landing.
     document.querySelectorAll(".modal").forEach((m) => (m.hidden = true));
     navigate("full");
@@ -389,8 +389,8 @@
   // Returns EVERY path the selection matches, not just the best one. A path
   // is either a hand-authored scenario whose prerequisites are all present,
   // or one generated from an entry x weakness pairing that no named scenario
-  // already covers. Everything downstream — path counts, intervention impact,
-  // the before/after simulation — is derived from this one function.
+  // already covers. Everything downstream (path counts, intervention impact,
+  // the before/after simulation) is derived from this one function.
   // ---------------------------------------------------------------------
   function buildPaths(selectedIds) {
     const sel = selectedIds instanceof Set ? selectedIds : new Set(selectedIds);
@@ -498,9 +498,9 @@
       return "Select at least one way an attacker could first reach you (an entry point, like public wifi or an unknown link) and one weakness that would let it escalate (like password reuse or missing 2FA) to see a full chain.";
     }
     if (entries.length === 0) {
-      return "You've selected real weaknesses, but no entry point yet — add a habit like public wifi, QR scanning, or clicking unknown links so we can show how an attacker would actually get in first.";
+      return "You've selected real weaknesses, but no entry point yet. Add a habit like public wifi, QR scanning, or clicking unknown links so we can show how an attacker would actually get in first.";
     }
-    return "You've selected an entry point, but nothing that would let it escalate — add a weakness like password reuse, missing 2FA, or a reused PIN to see the full chain.";
+    return "You've selected an entry point, but nothing that would let it escalate. Add a weakness like password reuse, missing 2FA, or a reused PIN to see the full chain.";
   }
 
   function runSimulation() {
@@ -524,7 +524,7 @@
         resultsNoChain.hidden = false;
         noChainText.textContent =
           "Something went wrong running the simulation: " + err.message +
-          " — try a hard refresh (Ctrl+Shift+R) of this page.";
+          "; try a hard refresh (Ctrl+Shift+R) of this page.";
         console.error("ChainReaction simulation error:", err);
       }
     }, 1350);
@@ -770,7 +770,7 @@
           path.kind === "named"
             ? `Reference scenario <strong>${path.id}</strong> matched: it requires ${path.habits
                 .map((h) => habitLabel(h))
-                .join("; ")} — all present in your selection.`
+                .join("; ")}, all present in your selection.`
             : `The engine paired an entry point with an escalating weakness from your selection. Neither alone produces this path.`
         }</dd>
         ${
@@ -1019,7 +1019,7 @@
 
     if (data.interventions.length === 0) {
       list.innerHTML =
-        '<p class="intervention-empty">No single change removes a whole path from this selection — each matched path here has more than one independent route.</p>';
+        '<p class="intervention-empty">No single change removes a whole path from this selection. Each matched path here has more than one independent route.</p>';
       return;
     }
 
@@ -1073,7 +1073,7 @@
     sim.hidden = false;
     sim.innerHTML = `
       <div class="sim-head">
-        <span class="sim-kicker">Simulated — nothing has actually been changed on your accounts</span>
+        <span class="sim-kicker">Simulated: nothing has actually been changed on your accounts</span>
         <h3>${item.shortName}</h3>
       </div>
       <div class="sim-compare">
@@ -1334,8 +1334,8 @@
     fixResult.innerHTML = `
       <p class="fix-result-headline">The chain broke.</p>
       <p class="fix-result-detail">
-        Fixing "${habitLabel(weakestLinkId)}" breaks the chain at step ${weakestLinkStepIndex + 1} —
-        everything after that point stops being possible. ${removed} of ${base} matched path${base === 1 ? "" : "s"}
+        Fixing "${habitLabel(weakestLinkId)}" breaks the chain at step ${weakestLinkStepIndex + 1}.
+        Everything after that point stops being possible. ${removed} of ${base} matched path${base === 1 ? "" : "s"}
         no longer match, leaving ${after}.
       </p>
       ${advice ? `<p class="fix-result-advice"><strong>How to actually fix it:</strong> ${advice}</p>` : ""}
@@ -1436,13 +1436,13 @@
     engineCard.innerHTML = `
       <div class="library-card-kicker">Rules Engine</div>
       <h3>Everything else</h3>
-      <p>${entryCount} entry points &times; ${weaknessCount} escalating weaknesses &mdash; at least ${combos} other realistic chains the engine can assemble on the fly, further shaped by ${signalCount} exposure signals.</p>
+      <p>${entryCount} entry points &times; ${weaknessCount} escalating weaknesses: at least ${combos} other realistic chains the engine can assemble on the fly, further shaped by ${signalCount} exposure signals.</p>
       <div class="library-card-steps">Generated, not hand-written</div>
     `;
     libraryGrid.appendChild(engineCard);
   }
 
-  // --- Cipher: rule-based assistant (no external API — deterministic matching
+  // --- Cipher: rule-based assistant (no external API, deterministic matching
   // against FAQ triggers, the glossary, and the habit keyword map only) ---
   function cipherRespond(userText) {
     const text = userText.toLowerCase();
@@ -1482,8 +1482,8 @@
       return {
         text:
           habitIds.length === 1
-            ? `That sounds like it maps to one habit in the library — here it is:`
-            : `That could map to a few things in the library — pick whichever actually apply:`,
+            ? `That sounds like it maps to one habit in the library. Here it is:`
+            : `That could map to a few things in the library. Pick whichever actually apply:`,
         actionHabitIds: habitIds,
       };
     }
@@ -1496,7 +1496,7 @@
     return {
       text:
         "I don't have an exact match for that yet in my library. Try describing it a different way, " +
-        "pick a habit directly from the list above, or ask me what a specific term means — like \"what is 2FA\".",
+        "pick a habit directly from the list above, or ask me what a specific term means, like \"what is 2FA\".",
     };
   }
 
@@ -1574,7 +1574,7 @@
           "bot",
           `Added ${names} (${selected.size} total selected).` +
             (canRun
-              ? " Ready to see the assessment — chain, severity score, and threat model?"
+              ? " Ready to see the assessment: chain, severity score, and threat model?"
               : " Add at least one more habit above to unlock a full assessment."),
           canRun ? "RUN_ASSESSMENT" : null
         );
@@ -1766,7 +1766,7 @@
 
 
   // --- Situation selector: highlights the factors that matter for a given
-  // threat model. It never filters anything out — nothing is gated on it.
+  // threat model. It never filters anything out. Nothing is gated on it.
   let activeSituation = null;
 
   function renderSituations() {
@@ -1818,7 +1818,7 @@
     const banner = document.getElementById("demoBanner");
     const desc = document.getElementById("demoDesc");
     if (desc) {
-      desc.textContent = `${DEMO_PROFILE.name} — ${DEMO_PROFILE.role}. ${DEMO_PROFILE.habits.length} factors selected. ${DEMO_PROFILE.note}`;
+      desc.textContent = `${DEMO_PROFILE.name}, ${DEMO_PROFILE.role}. ${DEMO_PROFILE.habits.length} factors selected. ${DEMO_PROFILE.note}`;
     }
     if (banner) banner.hidden = false;
 
@@ -2070,7 +2070,7 @@
       if (summaryEl) {
         summaryEl.textContent =
           yesIds.length === 0
-            ? "You answered no to everything here — a good sign, though these six are only a slice of the picture."
+            ? "You answered no to everything here. A good sign, though these six are only a slice of the picture."
             : "Your answers include risk factors but not a full entry-to-impact path. The full assessment covers 12 more habits that often complete it.";
       }
       if (weakestEl) weakestEl.hidden = true;
