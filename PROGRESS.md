@@ -1,10 +1,10 @@
 # ChainReaction - progress
 
 ## Current step
-Step 0 complete. Next session does Step 1 only (design system, both themes, contrast, theme toggle).
+Step 0 complete. Repo: https://github.com/Radha1008/chainreaction-ewgh-2026 - Live: https://radha1008.github.io/chainreaction-ewgh-2026/ Next session does Step 1 only (design system, both themes, contrast, theme toggle).
 
 ## Done
-- **Step 0** (20 Sep 2026): file-timestamp evidence exported to `../chainreaction-file-dates.csv` (both local copies captured; Desktop copy retains the 19 Sep creation times and is now the repo). Git initialised on `main` with `.gitignore`, first commit of all prior work, public GitHub repo created, pushed, Pages enabled. CODE MAP written below.
+- **Step 0** (20 Sep 2026): live Pages URL verified serving index.html + all three assets (HTTP 200). File-timestamp evidence exported to `../chainreaction-file-dates.csv` (both local copies captured; Desktop copy retains the 19 Sep creation times and is now the repo). Git initialised on `main` with `.gitignore`, first commit of all prior work, public GitHub repo created, pushed, Pages enabled. CODE MAP written below.
 
 ## Next
 - **Step 1** - design tokens, Ink/Paper themes, type, header theme toggle, restyle home + quick check + full assessment, fix contrast.
