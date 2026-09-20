@@ -4299,3 +4299,115 @@ input:focus-visible,
   letter-spacing: 0.02em;
   color: var(--text-dim);
 }
+
+
+/* --- Cipher mascot: an original geometric fox, drawn from theme tokens only --- */
+.fox {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.fox-head { fill: var(--accent); }
+.fox-ear { fill: var(--bg); }
+.fox-muzzle { fill: var(--paper); }
+.fox-mark { fill: var(--sage); }
+.fox-eye { fill: var(--bg); }
+.fox-nose { fill: var(--accent-2); }
+
+.fox-eyes {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: foxBlink 6.5s ease-in-out infinite;
+}
+
+@keyframes foxBlink {
+  0%, 92%, 100% { transform: scaleY(1); }
+  95%, 96.5% { transform: scaleY(0.12); }
+}
+
+/* On the accent-filled floating button the palette inverts so the fox stays legible. */
+.cipher-toggle .fox-head { fill: var(--bg); }
+.cipher-toggle .fox-ear { fill: var(--accent); }
+.cipher-toggle .fox-eye { fill: var(--accent); }
+.cipher-toggle .fox-nose { fill: var(--bg); }
+
+.cipher-toggle .fox {
+  width: 30px;
+  height: 30px;
+}
+
+.cipher-avatar {
+  width: 30px;
+  height: 30px;
+  flex: 0 0 auto;
+  display: block;
+}
+
+/* --- Cipher speech-bubble tips --- */
+.cipher-tip {
+  position: relative;
+  width: min(250px, calc(100vw - 60px));
+  background: var(--bg-card);
+  color: var(--text);
+  border: 1px solid var(--accent);
+  border-radius: 12px;
+  padding: 12px 13px 10px;
+  box-shadow: 0 14px 34px -14px rgba(0, 0, 0, 0.7);
+  animation: cipherTipIn 0.28s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.cipher-tip::after {
+  content: "";
+  position: absolute;
+  right: 20px;
+  bottom: -7px;
+  width: 11px;
+  height: 11px;
+  background: var(--bg-card);
+  border-right: 1px solid var(--accent);
+  border-bottom: 1px solid var(--accent);
+  transform: rotate(45deg);
+}
+
+@keyframes cipherTipIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.cipher-tip-text {
+  margin: 0 0 9px;
+  font-size: 0.82rem;
+  line-height: 1.45;
+  color: var(--text);
+}
+
+.cipher-tip-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.cipher-tip-btn {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  color: var(--text-dim);
+  font: inherit;
+  font-size: 0.7rem;
+  letter-spacing: 0.02em;
+  padding: 4px 10px;
+  cursor: pointer;
+  transition: color 0.18s ease, border-color 0.18s ease;
+}
+
+.cipher-tip-btn:hover,
+.cipher-tip-btn:focus-visible {
+  color: var(--text);
+  border-color: var(--accent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fox-eyes { animation: none; }
+  .cipher-tip { animation: none; }
+}

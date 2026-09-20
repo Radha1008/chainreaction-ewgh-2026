@@ -549,6 +549,20 @@
   <div class="cipher-widget">
     <div id="cipherPanel" class="cipher-panel" hidden>
       <div class="cipher-header">
+        <span class="cipher-avatar">
+      <svg class="fox" viewBox="0 0 48 48" aria-hidden="true" focusable="false">
+        <path class="fox-head" d="M24 44 L6 21 L9.5 5 L24 14 L38.5 5 L42 21 Z"/>
+        <path class="fox-ear" d="M11.5 9 L10 19 L18.5 14.5 Z"/>
+        <path class="fox-ear" d="M36.5 9 L38 19 L29.5 14.5 Z"/>
+        <path class="fox-muzzle" d="M24 41 L15 27 L33 27 Z"/>
+        <path class="fox-mark" d="M18 27 L24 32 L30 27 Z"/>
+        <g class="fox-eyes">
+          <path class="fox-eye" d="M14 22 L20 24.5 L14 26.5 Z"/>
+          <path class="fox-eye" d="M34 22 L28 24.5 L34 26.5 Z"/>
+        </g>
+        <path class="fox-nose" d="M24 35.5 L21 31 L27 31 Z"/>
+      </svg>
+        </span>
         <div class="cipher-header-text">
           <span class="cipher-name">Cipher</span>
           <span class="cipher-subtitle">Rule-based assistant, not an AI model</span>
@@ -565,8 +579,26 @@
         </button>
       </form>
     </div>
+    <div id="cipherTip" class="cipher-tip" role="status" hidden>
+      <p class="cipher-tip-text" id="cipherTipText"></p>
+      <div class="cipher-tip-actions">
+        <button type="button" class="cipher-tip-btn" id="cipherTipHide">Hide tips</button>
+        <button type="button" class="cipher-tip-btn" id="cipherTipClose">Got it</button>
+      </div>
+    </div>
     <button type="button" class="cipher-toggle" id="cipherToggle" aria-label="Open Cipher assistant">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2Z"/></svg>
+      <svg class="fox" viewBox="0 0 48 48" aria-hidden="true" focusable="false">
+        <path class="fox-head" d="M24 44 L6 21 L9.5 5 L24 14 L38.5 5 L42 21 Z"/>
+        <path class="fox-ear" d="M11.5 9 L10 19 L18.5 14.5 Z"/>
+        <path class="fox-ear" d="M36.5 9 L38 19 L29.5 14.5 Z"/>
+        <path class="fox-muzzle" d="M24 41 L15 27 L33 27 Z"/>
+        <path class="fox-mark" d="M18 27 L24 32 L30 27 Z"/>
+        <g class="fox-eyes">
+          <path class="fox-eye" d="M14 22 L20 24.5 L14 26.5 Z"/>
+          <path class="fox-eye" d="M34 22 L28 24.5 L34 26.5 Z"/>
+        </g>
+        <path class="fox-nose" d="M24 35.5 L21 31 L27 31 Z"/>
+      </svg>
     </button>
   </div>
 

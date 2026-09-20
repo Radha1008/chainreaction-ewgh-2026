@@ -724,6 +724,7 @@
 
     resultsNoChain.hidden = true;
     resultsChain.hidden = false;
+    showCipherTip("results");
 
     renderFindings(selectedIds, paths, interventionData);
     renderPathList(paths);
@@ -1772,6 +1773,8 @@
 
     function openPanel() {
       panel.hidden = false;
+      cipherPanelOpen = true;
+      hideCipherTip();
       if (!greeted) {
         appendCipherMessage(
           "bot",
@@ -1785,6 +1788,7 @@
 
     function closePanel() {
       panel.hidden = true;
+      cipherPanelOpen = false;
     }
 
     toggle.addEventListener("click", () => {
@@ -2028,6 +2032,47 @@
     }
   }
 
+
+  // --- Cipher tips: rule-based speech bubbles, one per page visit, memory only ---
+  const CIPHER_TIPS = {
+    home: "Start with the job-seeker scenario.",
+    quick: "Six quick questions, no wrong answers.",
+    full: "Pick a few habits and I'll show you the chain.",
+    results: "Hover any step to see why it's connected.",
+  };
+  const tipsSeen = new Set();
+  let tipsDisabled = false;
+  let cipherPanelOpen = false;
+
+  function hideCipherTip() {
+    const tip = document.getElementById("cipherTip");
+    if (tip) tip.hidden = true;
+  }
+
+  function showCipherTip(key) {
+    if (tipsDisabled || cipherPanelOpen) return;
+    const text = CIPHER_TIPS[key];
+    const tip = document.getElementById("cipherTip");
+    const body = document.getElementById("cipherTipText");
+    if (!text || !tip || !body || tipsSeen.has(key)) return;
+    tipsSeen.add(key);
+    body.textContent = text;
+    tip.hidden = false;
+  }
+
+  function setupCipherTips() {
+    const hide = document.getElementById("cipherTipHide");
+    const close = document.getElementById("cipherTipClose");
+    if (close) close.addEventListener("click", hideCipherTip);
+    if (hide) {
+      hide.addEventListener("click", () => {
+        tipsDisabled = true;
+        hideCipherTip();
+      });
+    }
+    showCipherTip("home");
+  }
+
   // --- Page routing (Home / Quick check / Full assessment) ---
   function navigate(pageName) {
     const pages = {
@@ -2045,6 +2090,7 @@
     });
 
     window.scrollTo({ top: 0, behavior: "smooth" });
+    showCipherTip(pageName);
   }
 
   function setupRouting() {
@@ -2418,6 +2464,7 @@
   setupPerspectiveToggle();
   setupModals();
   setupCipher();
+  setupCipherTips();
 
   if (new URLSearchParams(window.location.search).get("demo") === "1") {
     navigate("full");
