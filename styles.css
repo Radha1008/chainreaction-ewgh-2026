@@ -243,6 +243,14 @@ body {
   font-weight: 800;
   letter-spacing: -0.025em;
   white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.brand-mark {
+  border-radius: 6px;
+  display: block;
 }
 
 .accent-text {

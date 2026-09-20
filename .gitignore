@@ -13,3 +13,4 @@ tmp/
 # Never commit local evidence exports or dependency folders
 node_modules/
 *.csv
+logo-source.jpg
