@@ -409,6 +409,7 @@
         objective: chain.objective || "Account compromise",
         realWorld: chain.realWorld,
         habits: chain.requiredHabits.slice(),
+        tourSteps: chain.tourSteps,
       });
     });
 
@@ -713,6 +714,8 @@
           ? "Same information, read as inferences someone else could draw from it."
           : "Same information, from your side.";
     }
+
+    if (tourState) renderTourStep();
   }
 
   function setupPerspectiveToggle() {
@@ -786,8 +789,221 @@
     if (panel) {
       panel.hidden = true;
       panel.innerHTML = "";
+      panel.classList.remove("tour-mode");
     }
     chainFlow.querySelectorAll(".flow-node").forEach((n) => n.classList.remove("node-selected"));
+  }
+
+  // --- guided walkthrough (job-seeker demo) --------------------------------
+  // User-paced only: nothing here auto-advances. `startTour` is invoked once,
+  // after the initial calm draw finishes, to land on step 1 and wait.
+  let tourState = null;
+
+  function computeMfaRemovedCount(path) {
+    const base = buildPaths(selected).length;
+    const reducedSet = new Set(selected);
+    reducedSet.delete(path.weakestLink);
+    const after = buildPaths(reducedSet).length;
+    return base - after;
+  }
+
+  function setMfaPreview(weakestLinkStepIndex, on) {
+    chainFlow.querySelectorAll(".flow-node").forEach((n, i) => {
+      if (i >= weakestLinkStepIndex) n.classList.toggle("mfa-preview", on);
+    });
+  }
+
+  function attachMfaHoverPreview(btn, weakestLinkStepIndex, removedCount) {
+    const prevBadge = btn.nextElementSibling;
+    if (prevBadge && prevBadge.classList.contains("mfa-preview-badge")) prevBadge.remove();
+    const badge = document.createElement("span");
+    badge.className = "mfa-preview-badge";
+    badge.hidden = true;
+    badge.textContent = `-${removedCount} path${removedCount === 1 ? "" : "s"}`;
+    btn.insertAdjacentElement("afterend", badge);
+    const on = () => {
+      setMfaPreview(weakestLinkStepIndex, true);
+      badge.hidden = false;
+    };
+    const off = () => {
+      setMfaPreview(weakestLinkStepIndex, false);
+      badge.hidden = true;
+    };
+    btn.addEventListener("mouseenter", on);
+    btn.addEventListener("mouseleave", off);
+    btn.addEventListener("focus", on);
+    btn.addEventListener("blur", off);
+  }
+
+  function startTour(path, startIndex) {
+    const nodes = Array.from(chainFlow.querySelectorAll(".flow-node"));
+    if (nodes.length === 0) return;
+    const index = Math.min(Math.max(startIndex || 0, 0), nodes.length - 1);
+    tourState = { path, index, nodes };
+    document.addEventListener("keydown", tourKeydownHandler);
+    renderTourStep();
+  }
+
+  function endTour() {
+    if (!tourState) return;
+    tourState.nodes.forEach((n) => n.classList.remove("tour-dim", "tour-active"));
+    document.removeEventListener("keydown", tourKeydownHandler);
+    tourState = null;
+    hideNodeDetail();
+  }
+
+  function tourKeydownHandler(e) {
+    if (!tourState) return;
+    if (e.key === "ArrowRight") {
+      e.preventDefault();
+      tourNext();
+    } else if (e.key === "ArrowLeft") {
+      e.preventDefault();
+      tourBack();
+    } else if (e.key === "Escape") {
+      e.preventDefault();
+      endTour();
+    }
+  }
+
+  function tourNext() {
+    if (!tourState) return;
+    if (tourState.index < tourState.nodes.length - 1) {
+      tourState.index++;
+      renderTourStep();
+    }
+  }
+
+  function tourBack() {
+    if (!tourState) return;
+    if (tourState.index > 0) {
+      tourState.index--;
+      renderTourStep();
+    }
+  }
+
+  function renderTourStep() {
+    if (!tourState) return;
+    const { path, index, nodes } = tourState;
+    const step = path.tourSteps[index];
+    nodes.forEach((n, i) => {
+      n.classList.toggle("tour-active", i === index);
+      n.classList.toggle("tour-dim", i !== index);
+      n.classList.toggle("node-selected", i === index);
+    });
+
+    const panel = document.getElementById("nodeDetail");
+    if (!panel) return;
+    panel.classList.add("tour-mode");
+    panel.hidden = false;
+
+    const attackerEmphasis = currentPerspective === "attacker";
+    const isLast = index === nodes.length - 1;
+
+    panel.innerHTML = `
+      <div class="tour-head-row">
+        <span class="tour-step-counter">Step ${index + 1} of ${nodes.length}</span>
+        <button type="button" class="tour-skip" id="tourSkip">Skip tour</button>
+      </div>
+      <h3 class="tour-title">${step.title}</h3>
+      <div class="tour-section">
+        <span class="tour-section-label">What happens</span>
+        <p>${step.whatHappens}</p>
+      </div>
+      <div class="tour-section">
+        <span class="tour-section-label">Why it's connected</span>
+        <p>${step.whyConnected}</p>
+      </div>
+      <div class="tour-section tour-section-attacker${attackerEmphasis ? " tour-emphasis" : ""}">
+        <span class="tour-section-label">What an attacker sees</span>
+        <p>${step.whatAttackerSees}</p>
+      </div>
+      <div class="tour-section tour-section-fix">
+        <span class="tour-section-label">What breaks it</span>
+        <p>${step.whatBreaksIt}</p>
+      </div>
+      ${
+        step.isFixStep
+          ? `<div class="tour-fix-prompt">
+               <p class="tour-fix-headline">Now try the smallest fix.</p>
+               <div class="tour-fix-row">
+                 <button type="button" class="btn btn-fix" id="tourFixBtn">Simulate MFA</button>
+               </div>
+             </div>`
+          : ""
+      }
+      <div class="tour-controls">
+        <div class="tour-nav-group">
+          <button type="button" class="btn btn-quiet btn-sm" id="tourBack"${index === 0 ? " disabled" : ""}>Back</button>
+          <button type="button" class="btn btn-sm" id="tourNext">${isLast ? "Done" : "Next"}</button>
+        </div>
+      </div>
+    `;
+
+    const skipBtn = panel.querySelector("#tourSkip");
+    if (skipBtn) skipBtn.addEventListener("click", endTour);
+    const backBtn = panel.querySelector("#tourBack");
+    if (backBtn) backBtn.addEventListener("click", tourBack);
+    const nextBtn = panel.querySelector("#tourNext");
+    if (nextBtn) nextBtn.addEventListener("click", () => (isLast ? endTour() : tourNext()));
+    const fixBtnInCard = panel.querySelector("#tourFixBtn");
+    if (fixBtnInCard) {
+      attachMfaHoverPreview(fixBtnInCard, path.weakestLinkStepIndex, computeMfaRemovedCount(path));
+      fixBtnInCard.addEventListener("click", () => runTourFix(path));
+    }
+
+    const reduced = prefersReducedMotion();
+    nodes[index].scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "center" });
+  }
+
+  function runTourFix(path) {
+    const btn = document.getElementById("tourFixBtn");
+    if (btn) btn.disabled = true;
+    const reduced = prefersReducedMotion();
+    setMfaPreview(path.weakestLinkStepIndex, true);
+
+    const base = buildPaths(selected).length;
+    const reducedSet = new Set(selected);
+    reducedSet.delete(path.weakestLink);
+    const after = buildPaths(reducedSet).length;
+    const removedCount = base - after;
+
+    setTimeout(
+      () => {
+        chainFlow.querySelectorAll(".flow-node").forEach((n, i) => {
+          n.classList.remove("mfa-preview");
+          if (i >= path.weakestLinkStepIndex) n.classList.add("broken");
+        });
+        concludeTour(removedCount, base, after);
+      },
+      reduced ? 0 : 1500
+    );
+  }
+
+  function concludeTour(removed, base, after) {
+    if (tourState) tourState.nodes.forEach((n) => n.classList.remove("tour-dim", "tour-active"));
+    const path = tourState ? tourState.path : null;
+    document.removeEventListener("keydown", tourKeydownHandler);
+    tourState = null;
+
+    const panel = document.getElementById("nodeDetail");
+    if (!panel) return;
+    panel.classList.add("tour-mode");
+    panel.hidden = false;
+    panel.innerHTML = `
+      <p class="tour-conclusion-headline">The chain broke.</p>
+      <p class="tour-conclusion-detail">${removed} of ${base} matched path${base === 1 ? "" : "s"} no longer match, leaving ${after}.</p>
+      <button type="button" class="btn btn-sm" id="tourReplay">Replay the tour</button>
+    `;
+    const replayBtn = panel.querySelector("#tourReplay");
+    if (replayBtn && path) {
+      replayBtn.addEventListener("click", () => {
+        chainFlow.querySelectorAll(".flow-node").forEach((n) => {
+          n.classList.remove("broken", "mfa-preview", "tour-dim", "tour-active", "node-selected");
+        });
+        renderChainFlow(path.steps, path.weakestLinkStepIndex, path);
+      });
+    }
   }
 
   // --- interventions ------------------------------------------------------
@@ -979,8 +1195,15 @@
     return "lock";
   }
 
+  function prefersReducedMotion() {
+    return !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+  }
+
   function renderChainFlow(stepTexts, weakestLinkStepIndex, path) {
     chainFlow.innerHTML = "";
+    endTour();
+    const tourEligible = !!(path && Array.isArray(path.tourSteps) && path.tourSteps.length === stepTexts.length);
+
     stepTexts.forEach((text, i) => {
       const color = stepColor(i, stepTexts.length, weakestLinkStepIndex);
       const icon = stepIcon(i, stepTexts.length, weakestLinkStepIndex);
@@ -1005,24 +1228,64 @@
         node.addEventListener("click", () => {
           chainFlow.querySelectorAll(".flow-node").forEach((n) => n.classList.remove("node-selected"));
           node.classList.add("node-selected");
-          showNodeDetail(path, i);
+          if (tourEligible) startTour(path, i);
+          else showNodeDetail(path, i);
         });
+        attachNodeTooltip(node, path, i);
       }
       chainFlow.appendChild(node);
     });
 
     const nodes = chainFlow.querySelectorAll(".flow-node");
+    const reduced = prefersReducedMotion();
+    const stagger = tourEligible ? 700 : 340;
+
     nodes.forEach((node, i) => {
-      setTimeout(() => {
+      const reveal = () => {
         node.classList.add("revealed");
         if (i === nodes.length - 1) {
           setTimeout(() => {
             resultsChain.classList.add("chain-complete-flash");
             setTimeout(() => resultsChain.classList.remove("chain-complete-flash"), 500);
-          }, 300);
+          }, reduced ? 0 : 300);
+          if (tourEligible) {
+            setTimeout(() => startTour(path, 0), reduced ? 0 : 350);
+          }
         }
-      }, i * 340);
+      };
+      if (reduced) reveal();
+      else setTimeout(reveal, i * stagger);
     });
+  }
+
+  // --- node hover / focus preview tooltip -------------------------------
+  let nodeTooltipEl = null;
+  function attachNodeTooltip(node, path, i) {
+    const isFinal = i === path.steps.length - 1;
+    const habitId = !isFinal && path.stepHabits ? path.stepHabits[i] : null;
+    const habit = habitId ? HABITS.find((h) => h.id === habitId) : null;
+    const label = isFinal ? path.objective : habit ? habit.shortName : `Step ${i + 1}`;
+
+    const show = () => {
+      if (!nodeTooltipEl) {
+        nodeTooltipEl = document.createElement("div");
+        nodeTooltipEl.className = "node-tooltip";
+        document.body.appendChild(nodeTooltipEl);
+      }
+      nodeTooltipEl.innerHTML = `<strong>${label}</strong>Click for the full breakdown`;
+      const r = node.getBoundingClientRect();
+      nodeTooltipEl.style.left = Math.max(8, r.left) + "px";
+      nodeTooltipEl.style.top = r.bottom + 8 + "px";
+      requestAnimationFrame(() => nodeTooltipEl.classList.add("visible"));
+    };
+    const hide = () => {
+      if (nodeTooltipEl) nodeTooltipEl.classList.remove("visible");
+    };
+    node.addEventListener("mouseenter", show);
+    node.addEventListener("mouseleave", hide);
+    node.addEventListener("focus", show);
+    node.addEventListener("blur", hide);
+    node.addEventListener("touchstart", show, { passive: true });
   }
 
   const MFA_HABIT_IDS = ["no_email_2fa", "sms_only_2fa"];
@@ -1062,6 +1325,8 @@
     newFixBtn.textContent = isMfaFix ? "Simulate MFA" : "What if you fixed this?";
     fixBtn.parentNode.replaceChild(newFixBtn, fixBtn);
     fixBtn = newFixBtn;
+
+    if (isMfaFix) attachMfaHoverPreview(fixBtn, weakestLinkStepIndex, removed);
 
     fixBtn.addEventListener("click", () => {
       const nodes = chainFlow.querySelectorAll(".flow-node");

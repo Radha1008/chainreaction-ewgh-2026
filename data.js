@@ -647,6 +647,61 @@ const CHAINS = [
       "Because your email has no two-factor authentication, that captured password logs straight in.",
       "Because that password is reused, what you just typed is not limited to the fake site either.",
     ],
+    // Guided-walkthrough content for the job-seeker demo. One entry per step
+    // above (same length/order as `steps`). Only the last step carries
+    // `isFixStep`, which is where the tour card offers "Simulate MFA".
+    tourSteps: [
+      {
+        title: "Your profile names your employer",
+        whatHappens: "Your public profile lists where you work, your role, and that you're open to new opportunities. None of that is private — it's the point of the profile.",
+        whyConnected: "This is the starting point: everything that follows is built from details you've already published.",
+        whatAttackerSees: "Organisation, role and seniority — enough to guess a likely email pattern and pick a believable angle.",
+        whatBreaksIt: "Trimming employer and role detail, or keeping the profile out of search indexing, removes this starting point.",
+      },
+      {
+        title: "Your email pattern can be guessed",
+        whatHappens: "From your employer, a likely corporate email format can be inferred and checked against the address you've made public.",
+        whyConnected: "The last step supplied the organisation; this step turns that into a specific, reachable target.",
+        whatAttackerSees: "A working email address to send the approach to, and a fixed target for every attempt after this one.",
+        whatBreaksIt: "Use a separate address for anything public, and keep your real recovery email unpublished.",
+      },
+      {
+        title: "A believable approach arrives",
+        whatHappens: "A message arrives referencing your actual team and a plausible next step in your career — not a generic cold pitch.",
+        whyConnected: "It uses the employer and email details from the two steps before it to sound specific instead of random.",
+        whatAttackerSees: "Enough real detail to skip the questions that usually give a scam away.",
+        whatBreaksIt: "No single habit removes this step on its own — it only works because the two before it succeeded.",
+      },
+      {
+        title: "You're primed to expect this message",
+        whatHappens: "Because your profile shows you're actively job hunting, an unexpected recruiter message reads as expected rather than suspicious.",
+        whyConnected: "The same visibility that helps real recruiters find you also tells a scammer exactly when you're most receptive.",
+        whatAttackerSees: "Someone measurably more likely to open, and act on, an unsolicited approach.",
+        whatBreaksIt: "Use a recruiter-only visibility setting instead of a public \"open to work\" badge.",
+      },
+      {
+        title: "The 'portal' asks you to sign in",
+        whatHappens: "The fake application link leads to a sign-in page asking you to verify your identity before continuing.",
+        whyConnected: "This is where the chain turns from gathering information into an actual credential-capture attempt.",
+        whatAttackerSees: "A login form built to look exactly like the one you already trust.",
+        whatBreaksIt: "Treat any unexpected \"verify to continue\" link as suspicious, and go to the real site directly instead.",
+      },
+      {
+        title: "No second factor stops the login",
+        whatHappens: "Your email account has no two-factor authentication, so the password you just typed logs straight in.",
+        whyConnected: "Every step before this one existed to get a real password typed into a fake page — this is where that payoff lands.",
+        whatAttackerSees: "One captured password is all it takes; there's no second check to fail.",
+        whatBreaksIt: "Turning on two-factor authentication breaks the chain at exactly this point, whether or not a password was ever caught.",
+      },
+      {
+        title: "One password, many accounts",
+        whatHappens: "Because that password is reused, what was just typed isn't limited to the fake site — it opens whatever else uses the same password.",
+        whyConnected: "This is where one captured credential turns into broader account takeover, extending everything the chain built up to here.",
+        whatAttackerSees: "A single working password to try across your other accounts before you've even noticed.",
+        whatBreaksIt: "A unique password per account (via a password manager) means this step never happens, even if the one before it does.",
+        isFixStep: true,
+      },
+    ],
   },
   {
     id: "public_profile_puzzle",
