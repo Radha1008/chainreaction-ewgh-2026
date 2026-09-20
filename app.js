@@ -266,6 +266,44 @@
     }
 
     updateSurfaceSummary();
+    renderLivePreview();
+  }
+
+  const LIVE_PREVIEW_EMPTY_TEXT =
+    "Hover a ring to see what each category exposes, then pick a few habits and watch a chain form.";
+
+  function renderLivePreview() {
+    const emptyEl = document.getElementById("livePreviewEmpty");
+    const bodyEl = document.getElementById("livePreviewBody");
+    const summaryEl = document.getElementById("livePreviewSummary");
+    const chainEl = document.getElementById("livePreviewChain");
+    const weakestEl = document.getElementById("livePreviewWeakest");
+    if (!emptyEl || !bodyEl) return;
+
+    if (selected.size === 0) {
+      emptyEl.textContent = LIVE_PREVIEW_EMPTY_TEXT;
+      emptyEl.hidden = false;
+      bodyEl.hidden = true;
+      return;
+    }
+
+    const paths = buildPaths(selected);
+    if (paths.length === 0) {
+      emptyEl.textContent = `${selected.size} habit${selected.size === 1 ? "" : "s"} selected, no attack path yet: add an entry point and a weakness to form a chain.`;
+      emptyEl.hidden = false;
+      bodyEl.hidden = true;
+      return;
+    }
+
+    emptyEl.hidden = true;
+    bodyEl.hidden = false;
+    const top = paths[0];
+    summaryEl.textContent = `${selected.size} habit${selected.size === 1 ? "" : "s"} selected → ${paths.length} possible attack path${paths.length === 1 ? "" : "s"}`;
+    chainEl.innerHTML = top.name
+      .split(" → ")
+      .map((n) => `<span class="live-preview-node">${n}</span>`)
+      .join('<span class="live-preview-arrow" aria-hidden="true">→</span>');
+    weakestEl.textContent = `Weakest link: ${habitLabel(top.weakestLink)}`;
   }
 
   function updateSurfaceSummary() {
@@ -391,6 +429,7 @@
         card.addEventListener("click", () => toggleHabit(habit.id, card));
         card.addEventListener("mouseenter", () => setSurfaceNodeHighlight(habit.stage, true));
         card.addEventListener("mouseleave", () => setSurfaceNodeHighlight(habit.stage, false));
+        attachHabitTooltip(card, habit);
         cardsWrap.appendChild(card);
       });
 
@@ -1417,6 +1456,30 @@
     node.addEventListener("focus", show);
     node.addEventListener("blur", hide);
     node.addEventListener("touchstart", show, { passive: true });
+  }
+
+  function attachHabitTooltip(card, habit) {
+    if (!habit.attackerView) return;
+    const show = () => {
+      if (!nodeTooltipEl) {
+        nodeTooltipEl = document.createElement("div");
+        nodeTooltipEl.className = "node-tooltip";
+        document.body.appendChild(nodeTooltipEl);
+      }
+      nodeTooltipEl.innerHTML = `<strong>${habit.shortName}</strong>${habit.attackerView}`;
+      const r = card.getBoundingClientRect();
+      nodeTooltipEl.style.left = Math.max(8, r.left) + "px";
+      nodeTooltipEl.style.top = r.bottom + 8 + "px";
+      requestAnimationFrame(() => nodeTooltipEl.classList.add("visible"));
+    };
+    const hide = () => {
+      if (nodeTooltipEl) nodeTooltipEl.classList.remove("visible");
+    };
+    card.addEventListener("mouseenter", show);
+    card.addEventListener("mouseleave", hide);
+    card.addEventListener("focus", show);
+    card.addEventListener("blur", hide);
+    card.addEventListener("touchstart", show, { passive: true });
   }
 
   const MFA_HABIT_IDS = ["no_email_2fa", "sms_only_2fa"];
