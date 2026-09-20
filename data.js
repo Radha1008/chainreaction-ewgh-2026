@@ -393,7 +393,7 @@ const DEMO_PROFILE = {
   role: "Job seeker",
   note: "Fictional demo data — not a real person.",
   situation: "job",
-  habits: ["public_employer", "active_job_search", "public_email", "no_verify_sender", "password_reuse", "no_email_2fa", "old_forgotten_account", "public_wifi", "stale_password"],
+  habits: ["public_employer", "active_job_search", "public_email", "no_email_2fa", "password_reuse"],
 };
 
 // Quick-start personas for the habit picker — each a realistic starting
@@ -517,6 +517,7 @@ const CHAINS = [
     requiredHabits: ["public_wifi", "password_reuse"],
     weakestLink: "password_reuse",
     weakestLinkStepIndex: 3,
+    stepHabits: ["public_wifi", null, null, "password_reuse", null],
     realWorld: "Password reuse is consistently the single most exploited weakness in account takeovers — one leaked password rarely stays contained to one account.",
     steps: [
       "You connect to public wifi at a coffee shop without a VPN.",
@@ -533,6 +534,7 @@ const CHAINS = [
     requiredHabits: ["no_email_2fa", "old_forgotten_account"],
     weakestLink: "no_email_2fa",
     weakestLinkStepIndex: 2,
+    stepHabits: ["old_forgotten_account", "no_email_2fa", null, null, null],
     realWorld: "Your email is the master key to almost every other account you own — it's the single highest-leverage account to lock down, precisely because everything else trusts it.",
     steps: [
       "You have an old, forgotten account with a saved card and weak security.",
@@ -549,6 +551,7 @@ const CHAINS = [
     requiredHabits: ["share_location", "smart_lock_email", "no_email_2fa"],
     weakestLink: "no_email_2fa",
     weakestLinkStepIndex: 3,
+    stepHabits: ["share_location", null, "smart_lock_email", "no_email_2fa", null],
     realWorld: "This is where a purely digital weakness stops staying digital — the same account gap that risks your inbox can risk your actual front door once smart devices are tied to it.",
     steps: [
       "You post that you're traveling, or away from home.",
@@ -565,6 +568,7 @@ const CHAINS = [
     requiredHabits: ["qr_scan", "password_reuse"],
     weakestLink: "password_reuse",
     weakestLinkStepIndex: 4,
+    stepHabits: ["qr_scan", null, null, null, "password_reuse"],
     realWorld: "QR-code phishing (\"quishing\") has surged precisely because it skips every filter built to catch suspicious links — nothing scans a code sitting on a parking meter before you do.",
     steps: [
       "You scan a QR code on a parking meter or flyer without checking where it leads.",
@@ -581,6 +585,7 @@ const CHAINS = [
     requiredHabits: ["auto_login_public", "browser_only_passwords"],
     weakestLink: "browser_only_passwords",
     weakestLinkStepIndex: 2,
+    stepHabits: ["auto_login_public", "browser_only_passwords", null, null, null],
     realWorld: "No hacking skill required for this one — just autofill and thirty seconds alone with an unlocked browser, which is exactly why it's so common on shared and public machines.",
     steps: [
       "You stay logged into your accounts on a shared or public computer — a library, a hotel business center.",
@@ -597,6 +602,7 @@ const CHAINS = [
     requiredHabits: ["public_email", "sms_only_2fa"],
     weakestLink: "sms_only_2fa",
     weakestLinkStepIndex: 2,
+    stepHabits: ["public_email", null, "sms_only_2fa", null, null],
     realWorld: "SIM-swap fraud specifically targets SMS-based two-factor authentication — the moment your number gets ported, every code meant to protect you gets delivered straight to the attacker instead.",
     steps: [
       "Your email address is easy to find or guess.",
@@ -613,6 +619,7 @@ const CHAINS = [
     requiredHabits: ["sideload_apps", "same_pin"],
     weakestLink: "same_pin",
     weakestLinkStepIndex: 2,
+    stepHabits: ["sideload_apps", null, null, "same_pin", null],
     realWorld: "Apps installed outside an official store skip the review process that normally catches exactly this kind of behavior — permissions a legitimate app would never be granted.",
     steps: [
       "You install an app from outside the official app store.",
@@ -625,9 +632,10 @@ const CHAINS = [
   {
     id: "fake_recruiter_chain",
     name: "The Fake Recruiter Chain",
-    requiredHabits: ["public_employer", "active_job_search", "public_email", "password_reuse"],
-    weakestLink: "password_reuse",
+    requiredHabits: ["public_employer", "active_job_search", "public_email", "no_email_2fa", "password_reuse"],
+    weakestLink: "no_email_2fa",
     weakestLinkStepIndex: 5,
+    stepHabits: ["public_employer", "public_email", null, "active_job_search", null, "no_email_2fa", "password_reuse"],
     realWorld: "Recruiter impersonation works because every piece it needs is already published on purpose — the employer, the role, the openness to being approached.",
     objective: "Credential harvesting",
     steps: [
@@ -636,7 +644,8 @@ const CHAINS = [
       "An approach arrives referencing your actual team and a plausible next step in your career.",
       "Because you're genuinely job hunting, an unexpected recruiter message is expected rather than suspicious.",
       "The 'application portal' asks you to sign in to verify your identity.",
-      "Because that password is reused, what you just typed is not limited to the fake site.",
+      "Because your email has no two-factor authentication, that captured password logs straight in.",
+      "Because that password is reused, what you just typed is not limited to the fake site either.",
     ],
   },
   {
@@ -645,6 +654,7 @@ const CHAINS = [
     requiredHabits: ["public_employer", "overshare_social", "password_reuse"],
     weakestLink: "password_reuse",
     weakestLinkStepIndex: 4,
+    stepHabits: ["public_employer", "overshare_social", null, null, "password_reuse"],
     realWorld: "No single post here is sensitive. The aggregate is — which is exactly why this pattern is so easy to miss while it's being assembled.",
     objective: "Account takeover via recovery questions",
     steps: [
@@ -661,6 +671,7 @@ const CHAINS = [
     requiredHabits: ["marketplace_listing", "public_phone", "share_location"],
     weakestLink: "public_phone",
     weakestLinkStepIndex: 2,
+    stepHabits: ["marketplace_listing", null, "public_phone", null, "share_location"],
     realWorld: "This chain crosses out of the browser. The digital details are ordinary; the pickup arrangement is what makes them physical.",
     objective: "Location exposure and repeated contact",
     steps: [
@@ -677,6 +688,7 @@ const CHAINS = [
     requiredHabits: ["dating_profile", "public_employer", "overshare_social"],
     weakestLink: "dating_profile",
     weakestLinkStepIndex: 1,
+    stepHabits: ["dating_profile", null, "public_employer", "overshare_social", null],
     realWorld: "The profile is meant to be pseudonymous. A reused photo is usually the single thread that undoes that.",
     objective: "Unwanted identification and discovery",
     steps: [
@@ -693,6 +705,7 @@ const CHAINS = [
     requiredHabits: ["shared_recovery_email", "public_email", "stale_password"],
     weakestLink: "shared_recovery_email",
     weakestLinkStepIndex: 3,
+    stepHabits: ["public_email", "stale_password", null, "shared_recovery_email", null],
     realWorld: "Recovery addresses are chosen for convenience and then quietly become the most valuable account a person owns.",
     objective: "Cascading account takeover",
     steps: [
@@ -709,6 +722,7 @@ const CHAINS = [
     requiredHabits: ["public_employer", "no_verify_sender", "no_email_2fa"],
     weakestLink: "no_email_2fa",
     weakestLinkStepIndex: 4,
+    stepHabits: ["public_employer", null, null, "no_verify_sender", "no_email_2fa"],
     realWorld: "Internal-looking mail is convincing precisely because the org chart it imitates is usually public.",
     objective: "Workplace credential compromise",
     steps: [
@@ -726,6 +740,7 @@ const CHAINS = [
     requiredHabits: ["overshare_social", "password_reuse"],
     weakestLink: "password_reuse",
     weakestLinkStepIndex: 3,
+    stepHabits: ["overshare_social", null, null, "password_reuse", null],
     realWorld: "Security questions were designed around information that used to be private — a pet's name, a hometown, a school. Social media quietly made most of that public by default.",
     steps: [
       "You post personal details — a pet's name, your hometown, where you went to school.",
@@ -742,6 +757,7 @@ const CHAINS = [
     requiredHabits: ["public_email", "stale_password"],
     weakestLink: "stale_password",
     weakestLinkStepIndex: 2,
+    stepHabits: ["public_email", null, "stale_password", null, null],
     realWorld: "This one requires no cleverness at all — just a search engine for leaked-credential databases and enough patience to try a few years-old passwords against your current accounts.",
     steps: [
       "Your email address is public or easy to guess.",

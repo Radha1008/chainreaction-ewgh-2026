@@ -403,6 +403,7 @@
         kind: "named",
         name: chain.name,
         steps: chain.steps,
+        stepHabits: chain.stepHabits || [],
         weakestLink: chain.weakestLink,
         weakestLinkStepIndex: chain.weakestLinkStepIndex,
         objective: chain.objective || "Account compromise",
@@ -426,14 +427,17 @@
         if (alreadyCovered) return;
 
         const steps = [entry.entryStep, entry.entryConsequence, weak.weaknessStep];
+        const stepHabits = [entry.id, null, weak.id];
         const habits = [entry.id, weak.id];
         const signal = signals[0];
 
         if (signal) {
           steps.push(signal.signalStep, signal.finalImpact);
+          stepHabits.push(signal.id, null);
           habits.push(signal.id);
         } else {
           steps.push(GENERIC_FINAL_IMPACT);
+          stepHabits.push(null);
         }
 
         paths.push({
@@ -441,6 +445,7 @@
           kind: "generated",
           name: `${entry.shortName} → ${weak.shortName}${signal ? " → " + signal.shortName : ""}`,
           steps,
+          stepHabits,
           weakestLink: weak.id,
           weakestLinkStepIndex: 2,
           objective: signal ? signal.shortName + " exposure" : "Account takeover",
@@ -660,15 +665,20 @@
     renderSeverityCard(path.habits);
     showRealWorldNote(path.realWorld || "");
     hideNodeDetail();
+    if (path.weakestLink != null && path.weakestLinkStepIndex != null) {
+      setupWeakestLink(path.weakestLink, path.weakestLinkStepIndex);
+    } else if (weakestLinkPanel) {
+      weakestLinkPanel.hidden = true;
+    }
   }
 
   // --- perspective toggle -------------------------------------------------
   function attackerLineFor(path, index) {
-    const habitsInPath = path.habits.map((id) => HABITS.find((h) => h.id === id)).filter(Boolean);
-    const habit = habitsInPath[Math.min(index, habitsInPath.length - 1)];
     if (index === path.steps.length - 1) {
       return `Potential objective: ${path.objective.toLowerCase()}.`;
     }
+    const habitId = path.stepHabits && path.stepHabits[index];
+    const habit = habitId ? HABITS.find((h) => h.id === habitId) : null;
     return habit && habit.attackerView
       ? habit.attackerView
       : "This step could be inferred from what is already visible.";
@@ -733,10 +743,10 @@
   function showNodeDetail(path, index) {
     const panel = document.getElementById("nodeDetail");
     if (!panel) return;
-    const habitsInPath = path.habits.map((id) => HABITS.find((h) => h.id === id)).filter(Boolean);
-    const habit = habitsInPath[Math.min(index, habitsInPath.length - 1)];
     const isFinal = index === path.steps.length - 1;
-    const fromUser = !isFinal && index < habitsInPath.length;
+    const habitId = !isFinal && path.stepHabits ? path.stepHabits[index] : null;
+    const habit = habitId ? HABITS.find((h) => h.id === habitId) : null;
+    const fromUser = !isFinal && !!habit;
 
     panel.hidden = false;
     panel.innerHTML = `
@@ -1015,6 +1025,8 @@
     });
   }
 
+  const MFA_HABIT_IDS = ["no_email_2fa", "sms_only_2fa"];
+
   function setupWeakestLink(weakestLinkId, weakestLinkStepIndex) {
     weakestLinkPanel.hidden = false;
     weakestLinkText.textContent = habitLabel(weakestLinkId);
@@ -1023,21 +1035,31 @@
 
     chainFlow.querySelectorAll(".flow-node").forEach((n) => n.classList.remove("broken"));
 
+    const isMfaFix = MFA_HABIT_IDS.includes(weakestLinkId);
+
     // Content is populated immediately (so a printed/shared summary is complete
     // even if "fixed" was never clicked interactively) but stays visually
     // hidden on-screen until the button reveals it, preserving the reveal.
     const habit = HABITS.find((h) => h.id === weakestLinkId);
     const advice = habit && habit.fixAdvice ? habit.fixAdvice : "";
+    const base = buildPaths(selected).length;
+    const reduced = new Set(selected);
+    reduced.delete(weakestLinkId);
+    const after = buildPaths(reduced).length;
+    const removed = base - after;
     fixResult.innerHTML = `
-      <p class="fix-result-headline">
+      <p class="fix-result-headline">The chain broke.</p>
+      <p class="fix-result-detail">
         Fixing "${habitLabel(weakestLinkId)}" breaks the chain at step ${weakestLinkStepIndex + 1} —
-        everything after that point stops being possible.
+        everything after that point stops being possible. ${removed} of ${base} matched path${base === 1 ? "" : "s"}
+        no longer match, leaving ${after}.
       </p>
       ${advice ? `<p class="fix-result-advice"><strong>How to actually fix it:</strong> ${advice}</p>` : ""}
     `;
     fixResult.hidden = true;
 
     const newFixBtn = fixBtn.cloneNode(true);
+    newFixBtn.textContent = isMfaFix ? "Simulate MFA" : "What if you fixed this?";
     fixBtn.parentNode.replaceChild(newFixBtn, fixBtn);
     fixBtn = newFixBtn;
 
@@ -1924,4 +1946,9 @@
   setupPerspectiveToggle();
   setupModals();
   setupCipher();
+
+  if (new URLSearchParams(window.location.search).get("demo") === "1") {
+    navigate("full");
+    setTimeout(loadDemo, 220);
+  }
 })();
