@@ -2278,6 +2278,21 @@ main#simulator {
   to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
+.cipher-panel.cipher-compact {
+  height: auto;
+  width: min(220px, calc(100vw - 44px));
+}
+
+.cipher-panel.cipher-compact .cipher-messages,
+.cipher-panel.cipher-compact .cipher-form {
+  display: none;
+}
+
+.cipher-panel.cipher-compact .cipher-header {
+  cursor: pointer;
+  border-bottom: none;
+}
+
 .cipher-header {
   display: flex;
   align-items: center;

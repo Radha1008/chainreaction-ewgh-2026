@@ -1199,6 +1199,27 @@
     return !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
   }
 
+  function collapseCipherPanel() {
+    const panel = document.getElementById("cipherPanel");
+    if (panel && !panel.hidden) panel.classList.add("cipher-compact");
+  }
+
+  function expandCipherPanel() {
+    const panel = document.getElementById("cipherPanel");
+    if (panel) panel.classList.remove("cipher-compact");
+  }
+
+  function focusResultsSection() {
+    const heading = resultsChain.hidden
+      ? document.getElementById("noChainText")
+      : document.getElementById("findingsTitle");
+    if (!heading) return;
+    const behavior = prefersReducedMotion() ? "auto" : "smooth";
+    heading.scrollIntoView({ behavior, block: "start" });
+    heading.setAttribute("tabindex", "-1");
+    heading.focus({ preventScroll: true });
+  }
+
   function renderChainFlow(stepTexts, weakestLinkStepIndex, path) {
     chainFlow.innerHTML = "";
     endTour();
@@ -1495,16 +1516,16 @@
       runBtnAction.className = "cipher-msg-action";
       runBtnAction.textContent = "Run assessment now";
       runBtnAction.addEventListener("click", () => {
+        navigate("full");
         runSimulation();
         runBtnAction.disabled = true;
         runBtnAction.textContent = "Running...";
         setTimeout(() => {
           runBtnAction.textContent = "Done";
+          collapseCipherPanel();
+          focusResultsSection();
+          appendCipherMessage("bot", "Done. You're on the results now.");
         }, 1350);
-        appendCipherMessage(
-          "bot",
-          "Done — scroll up to see the chain, severity score, and threat model. There's a \"Download / share this result\" button once it's rendered if you want to export it."
-        );
       });
       msg.appendChild(runBtnAction);
     } else if (Array.isArray(actionHabitIds) && actionHabitIds.length > 0) {
@@ -1595,9 +1616,19 @@
 
     toggle.addEventListener("click", () => {
       if (panel.hidden) openPanel();
+      else if (panel.classList.contains("cipher-compact")) expandCipherPanel();
       else closePanel();
     });
     if (closeBtn) closeBtn.addEventListener("click", closePanel);
+
+    const header = panel.querySelector(".cipher-header");
+    if (header) {
+      header.addEventListener("click", (e) => {
+        if (!panel.classList.contains("cipher-compact")) return;
+        if (e.target.closest(".cipher-close")) return;
+        expandCipherPanel();
+      });
+    }
 
     if (form) {
       form.addEventListener("submit", (e) => {
