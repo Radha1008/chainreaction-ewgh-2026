@@ -1498,6 +1498,9 @@
         runSimulation();
         runBtnAction.disabled = true;
         runBtnAction.textContent = "Running...";
+        setTimeout(() => {
+          runBtnAction.textContent = "Done";
+        }, 1350);
         appendCipherMessage(
           "bot",
           "Done — scroll up to see the chain, severity score, and threat model. There's a \"Download / share this result\" button once it's rendered if you want to export it."

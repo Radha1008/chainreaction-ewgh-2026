@@ -497,6 +497,7 @@ body {
 .modal-body {
   padding: 24px 22px 30px;
   overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .picker-header {
@@ -1335,26 +1336,29 @@ body {
 }
 
 .carousel-wide {
-  max-width: 720px;
+  max-width: 100%;
 }
 
 .library-track .library-card {
   flex: 0 0 100%;
-  margin: 2px;
+  min-width: 0;
 }
 
 .carousel-viewport {
   overflow: hidden;
   border-radius: 14px;
+  min-width: 0;
 }
 
 .carousel-track {
   display: flex;
+  min-width: 0;
   transition: transform 0.45s cubic-bezier(0.65, 0, 0.35, 1);
 }
 
 .step-card {
   flex: 0 0 100%;
+  min-width: 0;
   background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: 14px;
@@ -1376,6 +1380,7 @@ body {
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  z-index: 2;
   transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
 }
 
@@ -1391,16 +1396,16 @@ body {
 }
 
 .carousel-arrow-prev {
-  left: -46px;
+  left: 8px;
 }
 
 .carousel-arrow-next {
-  right: -46px;
+  right: 8px;
 }
 
 @media (max-width: 640px) {
-  .carousel-arrow-prev { left: -6px; }
-  .carousel-arrow-next { right: -6px; }
+  .carousel-arrow-prev { left: 4px; }
+  .carousel-arrow-next { right: 4px; }
 }
 
 .carousel-dots {
